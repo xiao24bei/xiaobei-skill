@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use this project in academic, tutorial, or public content, please cite it."
+title: "XiaoBei Skill: Image to VBA"
+authors:
+  - name: "小北在读研"
+date-released: "2026-05-26"
+license: "Apache-2.0"
+repository-code: "https://github.com/xiao24bei/xiaobei-skill-image-to-vba"
+abstract: "A Codex skill for reconstructing academic images, scientific diagrams, slides, and screenshots as editable Office VBA Shapes."

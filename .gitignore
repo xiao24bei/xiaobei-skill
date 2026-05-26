@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# macOS / editor
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Generated reconstruction artifacts
+outputs/
+generated/
+rendered/
+*.bas
+*.vba
+*.pptx
+*.pptm
+*.png
+*.jpg
+*.jpeg
+*.tif
+*.tiff
+
+# Keep source icons and placeholders tracked.
+!assets/
+!assets/gallery/
+!assets/gallery/*.png
+!assets/contact/
+!assets/contact/*.png
+!assets/contact/*.jpg
+!assets/contact/*.jpeg
+!assets/contact/*.svg
+!assets/contact/README.md
+!skills/**/assets/*.svg
+!skills/**/assets/.gitkeep
+!examples/.gitkeep

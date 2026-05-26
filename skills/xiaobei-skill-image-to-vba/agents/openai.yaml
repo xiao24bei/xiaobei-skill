@@ -1,0 +1,6 @@
+interface:
+  display_name: "小北在读研 · Image to VBA"
+  short_description: "小北出品：把学术图、科研示意图和截图重建成可编辑 Office VBA Shapes。"
+  icon_large: "./assets/image-to-vba.svg"
+  brand_color: "#2563EB"
+  default_prompt: "Use $xiaobei-skill-image-to-vba to convert this uploaded academic image into editable Office VBA Shapes code."
