@@ -1,12 +1,12 @@
 # XiaoBei Skill: Image to VBA
 
-大家好，我是**小北在读研**，研二在读，电子信息专业。目前主要做 **AI + 科研**、**Agent 赋能科研工作流** 相关内容，抖音约 **6.3 万粉丝**，全网累计 **10 万+ 关注**。
+大家好，我是**小北在读研**，研二在读，电子信息专业。目前主要做 **AI + 科研**、**Agent 赋能科研工作流** 相关内容。
 
 我会长期分享科研工具、论文阅读、学术绘图、科研 Agent、AI 自动化和研究生提效方法。除了这个开源 skill，我还在维护个人学术网站 [xiaobeiai.top](https://xiaobeiai.top) 和科研 API 中转站 [beiapi.cn](https://beiapi.cn)。
 
-这个仓库整理的是我自用并持续迭代的 **XiaoBei Skill: Image to VBA**，目标是把学术图、科研示意图、幻灯片截图或 UI 截图，重建成 PowerPoint / Office 里可以继续编辑的 Shapes 和 VBA 代码。
+这个仓库整理的是我自用并持续迭代的 **XiaoBei Skill: Image to VBA**，目标是将 PNG/JPG 图片中的学术图、科研示意图、幻灯片截图或 UI 截图，转化为 PowerPoint / Office 里可以继续编辑的 Shapes 和 VBA 代码。
 
-它的目标不是生成一张“看起来像”的 PNG，而是尽量输出可以在 PowerPoint、Excel 或 Word 里继续编辑的形状、文本框、线条、箭头、裁剪资产和 VBA 宏。
+它不是把原图再生成一张静态图片，而是尽量把图中的结构、文字、线条、箭头、标注和局部裁剪资产，重建为可以在 PowerPoint、Excel 或 Word 里二次修改的 Office 对象与 VBA 宏。
 
 **Search keywords:** `xiaobei-skill`, `xiaobei skill`, `xiaobei skills`, `XiaoBei skill`, `小北在读研`, `Image to VBA`, `Office VBA Shapes`, `academic figure reconstruction`
 
