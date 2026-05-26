@@ -1,39 +1,32 @@
 # XiaoBei Skill: Image to VBA
 
-大家好，我是**小北在读研**，研二在读，电子信息专业。目前主要做 **AI + 科研**、**Agent 赋能科研工作流** 相关内容。
+大家好，我是**小北在读研**，研二在读，电子信息专业。目前主要做 **AI + 科研**、**Agent 赋能科研工作流** 相关内容。全网10w➕粉丝，感兴趣的朋友也可以关注一下我的抖音：小北在读研
 
-我会长期分享科研工具、论文阅读、学术绘图、科研 Agent、AI 自动化和研究生提效方法。除了这个开源 skill，我还在维护个人学术网站 [xiaobeiai.top](https://xiaobeiai.top) 和科研 API 中转站 [beiapi.cn](https://beiapi.cn)。
+长期分享科研工具、论文阅读、学术绘图、科研 Agent、AI 自动化和研究生提效方法。除了这个开源 skill，我还在维护个人学术网站 [xiaobeiai.top](https://xiaobeiai.top) 和科研 API 中转站 [beiapi.cn](https://beiapi.cn)。
 
 这个仓库整理的是我自用并持续迭代的 **XiaoBei Skill: Image to VBA**，目标是将 PNG/JPG 图片中的学术图、科研示意图、幻灯片截图或 UI 截图，转化为 PowerPoint / Office 里可以继续编辑的 Shapes 和 VBA 代码。
 
 它不是把原图再生成一张静态图片，而是尽量把图中的结构、文字、线条、箭头、标注和局部裁剪资产，重建为可以在 PowerPoint、Excel 或 Word 里二次修改的 Office 对象与 VBA 宏。
 
-**Search keywords:** `xiaobei-skill`, `xiaobei skill`, `xiaobei skills`, `XiaoBei skill`, `小北在读研`, `Image to VBA`, `Office VBA Shapes`, `academic figure reconstruction`
 
 ## 加入科研 AI 交流
 
 如果你是硕士、博士、科研工作者，或者正在做论文、课题、学术绘图、科研自动化、Agent 工作流，欢迎加我微信交流。
 
-加好友时建议备注：
-
-```text
-GitHub + 学校/方向 + 年级
-```
-
-例如：
-
-```text
-GitHub + 电子信息 + 研二
-```
-
-<p align="center"><img src="assets/contact/wechat-contact-card.svg" width="760" alt="小北在读研微信联系卡片"></p>
-
-当前仓库已预留二维码展示位。把二维码图片保存为 `assets/contact/wechat-qrcode.png` 后，可以把上面的占位卡片替换为下方二维码图。
-
-<!--
-放入二维码后取消下面这一行的注释：
-<p align="center"><img src="assets/contact/wechat-qrcode.png" width="520" alt="小北在读研微信二维码"></p>
--->
+<table>
+  <tr>
+    <td width="46%" valign="top">
+      <h3>和小北一起做 AI + 科研</h3>
+      <p>适合硕博生、科研工作者、论文写作者、科研工具爱好者。</p>
+      <p>交流方向：科研 Agent / 学术绘图 / 论文工作流 / API 工具 / 研究生提效。</p>
+      <p><strong>加好友建议备注：</strong><br><code>GitHub + 学校/方向 + 年级</code></p>
+      <p>例如：<code>GitHub + 电子信息 + 研二</code></p>
+    </td>
+    <td width="54%" align="center" valign="middle">
+      <img src="assets/contact/wechat-qrcode.png" width="520" alt="小北在读研微信二维码">
+    </td>
+  </tr>
+</table>
 
 你也可以通过这些入口了解我正在做的东西：
 
@@ -43,7 +36,6 @@ GitHub + 电子信息 + 研二
 
 ## 项目亮点
 
-- **个人品牌名**：`xiaobei-skill-image-to-vba`，展示名为“小北在读研 · Image to VBA”。
 - **可编辑优先**：文字、箭头、框、表格、图例、坐标轴等优先用 Office Shapes 重建。
 - **Hybrid 保真**：显微图、照片、复杂 3D 渲染、logo 等不适合硬拆的区域，会作为小范围 raster crop 保留，并在报告里明确标注。
 - **Manifest 驱动**：先列元素清单，再建坐标模型，降低漏元素、错位、箭头乱指的问题。
@@ -70,7 +62,9 @@ GitHub + 电子信息 + 研二
 
 ```text
 xiaobei-skill-image-to-vba/
-├── assets/gallery/
+├── assets/
+│   ├── contact/
+│   └── gallery/
 ├── skills/
 │   └── xiaobei-skill-image-to-vba/
 │       ├── SKILL.md
@@ -133,33 +127,6 @@ Windows PowerPoint COM 自动化尝试：
 powershell -ExecutionPolicy Bypass -File skills/xiaobei-skill-image-to-vba/scripts/run_powerpoint_vba_windows.ps1 -VbaFile path\to\generated.bas
 ```
 
-## GitHub 搜索设置
-
-为了让别人搜索 `xiaobei-skill` 或 `xiaobei skill` 时更容易找到这个项目，建议发布到 GitHub 后在仓库右侧 About 区域设置：
-
-**Description**
-
-```text
-XiaoBei skill for converting academic images into editable Office VBA Shapes and PowerPoint reconstructions.
-```
-
-**Topics**
-
-```text
-xiaobei-skill
-xiaobei
-codex-skill
-openai-codex
-image-to-vba
-office-vba
-powerpoint
-office-shapes
-academic-figures
-research-figures
-ppt
-wps
-```
-
 ## 安全提醒
 
 这个项目会生成或辅助运行 VBA 宏。请只运行你信任的 VBA 代码，运行前先阅读生成的 `.bas` 文件。Office 可能会拦截宏导入或要求开启“信任对 VBA 项目对象模型的访问”，这是正常的安全边界。
@@ -173,17 +140,6 @@ Hybrid 模式可能会裁剪用户提供图片中的局部元素，例如显微�
 本仓库使用 Apache-2.0 license。代码和文档可以在许可证范围内使用、修改和分发，但“小北在读研”“小北”“XiaoBei”等个人品牌标识不授权用于暗示作者背书、赞助或官方关联。
 
 开源不能完全阻止别人 fork 或二次分发。这个仓库通过明确命名、`NOTICE`、`CITATION.cff` 和品牌说明，尽量把来源和记忆点钉牢。
-
-## 发布到 GitHub
-
-如果需要重新推送到 GitHub，可以执行：
-
-```bash
-git add .
-git commit -m "Initial release of XiaoBei Image to VBA"
-git remote add origin https://github.com/xiao24bei/xiaobei-skill-image-to-vba.git
-git push -u origin main
-```
 
 ## 非官方声明
 
