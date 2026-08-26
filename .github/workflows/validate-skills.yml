@@ -1,0 +1,21 @@
+name: Validate skills
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate collection metadata
+        run: python scripts/validate_skill_collection.py
+      - name: Compile helper scripts
+        run: python -m compileall -q skills/*/scripts

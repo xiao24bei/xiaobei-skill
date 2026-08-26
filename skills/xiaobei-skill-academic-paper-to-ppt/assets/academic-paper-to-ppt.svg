@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="XiaoBei Academic Paper to PPT icon">
+  <defs>
+    <linearGradient id="bg" x1="28" y1="24" x2="228" y2="232" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0B3A5B"/>
+      <stop offset="1" stop-color="#159BD3"/>
+    </linearGradient>
+  </defs>
+  <rect x="16" y="16" width="224" height="224" rx="48" fill="url(#bg)"/>
+  <path d="M58 69a13 13 0 0 1 13-13h86l41 41v91a13 13 0 0 1-13 13H71a13 13 0 0 1-13-13V69Z" fill="#fff" opacity=".96"/>
+  <path d="M157 56v41h41" fill="#C9F1FF" stroke="#0B3A5B" stroke-width="7" stroke-linejoin="round"/>
+  <rect x="81" y="112" width="94" height="12" rx="6" fill="#0B3A5B"/>
+  <rect x="81" y="136" width="65" height="10" rx="5" fill="#6BC9EA"/>
+  <path d="M83 178h25v-19H83v19Zm34 0h25v-34h-25v34Zm34 0h25v-48h-25v48Z" fill="#159BD3"/>
+</svg>

@@ -1,0 +1,6 @@
+interface:
+  display_name: "小北在读研 · Academic Paper to PPT"
+  short_description: "小北出品：把论文、文献和报告生成完整图片式学术答辩 PPT。"
+  icon_large: "./assets/academic-paper-to-ppt.svg"
+  brand_color: "#0B3A5B"
+  default_prompt: "Use $xiaobei-skill-academic-paper-to-ppt to turn this source document and optional PPT template into a strict image-only presentation, with one complete generated slide image per page."

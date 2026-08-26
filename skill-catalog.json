@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "repository": "xiao24bei/xiaobei-skill",
+  "root_installable": false,
+  "unspecified_install_policy": "ask_user_to_choose",
+  "skills": [
+    {
+      "name": "xiaobei-skill-image-to-vba",
+      "display_name": "小北在读研 · Image to VBA",
+      "path": "skills/xiaobei-skill-image-to-vba",
+      "description": "将学术图、科研示意图、幻灯片或 UI 截图重建为可编辑 Office VBA Shapes。"
+    },
+    {
+      "name": "xiaobei-skill-academic-paper-to-ppt",
+      "display_name": "小北在读研 · Academic Paper to PPT",
+      "path": "skills/xiaobei-skill-academic-paper-to-ppt",
+      "description": "将论文、文献、报告或技术文档生成图片式学术答辩或项目汇报 PPT。"
+    }
+  ]
+}

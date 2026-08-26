@@ -1,6 +1,6 @@
 ---
 name: xiaobei-skill-image-to-vba
-description: use when users want XiaoBei skill / xiaobei-skill / 小北在读研 style academic image-to-vba reconstruction: convert academic figures, scientific diagrams, slides, screenshots, or other images into vba, office drawing code, powerpoint/excel/word shapes, editable shape reconstruction, 1:1 recreation, pixel-like approximation, or hybrid editable Office shape reconstruction.
+description: "Use when users want XiaoBei skill / xiaobei-skill / 小北在读研 style academic image-to-VBA reconstruction: convert academic figures, scientific diagrams, slides, screenshots, or other images into VBA, Office drawing code, PowerPoint/Excel/Word shapes, editable shape reconstruction, 1:1 recreation, pixel-like approximation, or hybrid editable Office shape reconstruction."
 ---
 
 # XiaoBei Image to VBA

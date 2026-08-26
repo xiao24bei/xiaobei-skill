@@ -1,3 +1,2 @@
-Pillow>=10.0.0
-numpy>=1.26.0
-scikit-image>=0.22.0
+-r skills/xiaobei-skill-image-to-vba/requirements.txt
+-r skills/xiaobei-skill-academic-paper-to-ppt/requirements.txt
