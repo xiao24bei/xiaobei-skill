@@ -1,0 +1,8 @@
+interface:
+  display_name: "小北在读研 · Rebuild Image in PowerPoint"
+  short_description: "让 Codex 操作 PowerPoint，逐对象还原整张图片"
+  brand_color: "#8B2E1D"
+  default_prompt: "Use $xiaobei-skill-rebuild-image-in-powerpoint to operate PowerPoint and reconstruct this entire reference image as an editable slide."
+
+policy:
+  allow_implicit_invocation: true

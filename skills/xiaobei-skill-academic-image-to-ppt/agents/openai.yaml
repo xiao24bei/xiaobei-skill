@@ -1,8 +1,0 @@
-interface:
-  display_name: "小北在读研 · Academic Image to PPT"
-  short_description: "科研图片高保真重建为可编辑 PPT，支持可见绘制"
-  brand_color: "#8B2E1D"
-  default_prompt: "Use $xiaobei-skill-academic-image-to-ppt to redraw this academic image as an editable PowerPoint."
-
-policy:
-  allow_implicit_invocation: true

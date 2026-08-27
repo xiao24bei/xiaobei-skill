@@ -36,7 +36,7 @@
 | 展示名 | 调用名 | 适用任务 | 独立目录 |
 |---|---|---|---|
 | **小北在读研 · Image to VBA** | `$xiaobei-skill-image-to-vba` | 图片 → 可编辑 Office Shapes 与 VBA 代码 | [`skills/xiaobei-skill-image-to-vba`](skills/xiaobei-skill-image-to-vba) |
-| **小北在读研 · Academic Image to PPT** | `$xiaobei-skill-academic-image-to-ppt` | 学术图片 → 可编辑 PPTX；Windows 支持可见 PowerPoint 重建 | [`skills/xiaobei-skill-academic-image-to-ppt`](skills/xiaobei-skill-academic-image-to-ppt) |
+| **小北在读研 · Rebuild Image in PowerPoint** | `$xiaobei-skill-rebuild-image-in-powerpoint` | 让 Codex 直接操作 PowerPoint，将整张参考图片逐对象还原为可编辑 PPT | [`skills/xiaobei-skill-rebuild-image-in-powerpoint`](skills/xiaobei-skill-rebuild-image-in-powerpoint) |
 | **小北在读研 · Academic Paper to PPT** | `$xiaobei-skill-academic-paper-to-ppt` | 论文 / 报告 → 图片式整套答辩或项目汇报 PPTX | [`skills/xiaobei-skill-academic-paper-to-ppt`](skills/xiaobei-skill-academic-paper-to-ppt) |
 
 内部调用名使用小写英文字母与连字符，保证安装和调用兼容；Codex 界面中的 `display_name` 统一使用“**小北在读研 ·**”作为品牌前缀。
@@ -74,15 +74,15 @@
 |---|---|
 | ![Case 2 source](assets/gallery/case-02-source.png) | ![Case 2 editable preview](assets/gallery/case-02-editable-preview.png) |
 
-### 小北在读研 · Academic Image to PPT
+### 小北在读研 · Rebuild Image in PowerPoint
 
-这个 Skill 面向“给一张学术图，直接还原成可编辑 PowerPoint”的任务。Windows 环境下可在左侧 PowerPoint 中逐区、逐对象可见绘制；复杂生物机制图会采用“原生形状 + 局部原子素材”的 Hybrid 方式，保留文字、箭头、连接关系和可编辑结构。
+这个 Skill 让 Codex 直接操作 PowerPoint，将整张参考图片逐对象还原为可编辑 PPT。Windows 环境下可在左侧 PowerPoint 中逐区、逐对象可见绘制；复杂机制图会采用“原生形状 + 局部原子素材”的 Hybrid 方式，完整保留版面、文字、箭头、连接关系和可编辑结构。
 
-[![Academic Image to PPT 可见重建演示](assets/gallery/academic-image-to-ppt/demo-cover.jpg)](https://github.com/xiao24bei/xiaobei-skill/releases/tag/academic-image-to-ppt-demo-20260827)
+[![Rebuild Image in PowerPoint 可见重建演示](assets/gallery/rebuild-image-in-powerpoint/demo-cover.jpg)](https://github.com/xiao24bei/xiaobei-skill/releases/tag/rebuild-image-in-powerpoint-demo-20260827)
 
-**[观看 / 下载 56 秒完整演示](https://github.com/xiao24bei/xiaobei-skill/releases/download/academic-image-to-ppt-demo-20260827/xiaobei-skill-academic-image-to-ppt-demo.mp4)**
+**[观看 / 下载 56 秒完整演示](https://github.com/xiao24bei/xiaobei-skill/releases/download/rebuild-image-in-powerpoint-demo-20260827/xiaobei-skill-rebuild-image-in-powerpoint-demo.mp4)**
 
-> 演示录制时使用的是开发名 `$academic-image-to-ppt`；公开仓库已统一为 `$xiaobei-skill-academic-image-to-ppt`，安装和调用请以公开名称为准。
+> 演示录制时使用的是开发名 `$academic-image-to-ppt`；公开仓库已统一为 `$xiaobei-skill-rebuild-image-in-powerpoint`，安装和调用请以公开名称为准。
 
 - 左侧是持续保持可见的 PowerPoint，右侧是 Codex 的分区绘制过程。
 - 示例从空白页逐步完成复杂生物机制图，并保留约 240 个可编辑对象。
@@ -138,10 +138,10 @@ Codex 应先列出当前清单，不直接安装仓库根目录。
 Use $skill-installer to install https://github.com/xiao24bei/xiaobei-skill/tree/main/skills/xiaobei-skill-image-to-vba
 ```
 
-只安装 Academic Image to PPT：
+只安装 Rebuild Image in PowerPoint：
 
 ```text
-Use $skill-installer to install https://github.com/xiao24bei/xiaobei-skill/tree/main/skills/xiaobei-skill-academic-image-to-ppt
+Use $skill-installer to install https://github.com/xiao24bei/xiaobei-skill/tree/main/skills/xiaobei-skill-rebuild-image-in-powerpoint
 ```
 
 只安装 Academic Paper to PPT：
@@ -157,7 +157,7 @@ Use $xiaobei-skill-image-to-vba to convert this uploaded academic image into edi
 ```
 
 ```text
-Use $xiaobei-skill-academic-image-to-ppt to redraw this academic image as an editable PowerPoint.
+Use $xiaobei-skill-rebuild-image-in-powerpoint to operate PowerPoint and reconstruct this entire reference image as an editable slide.
 ```
 
 ```text
@@ -172,7 +172,7 @@ mkdir -p ~/.codex/skills
 ln -s "$(pwd)/xiaobei-skill/skills/xiaobei-skill-image-to-vba" ~/.codex/skills/xiaobei-skill-image-to-vba
 ```
 
-把最后一个目录替换为 `xiaobei-skill-academic-image-to-ppt` 或 `xiaobei-skill-academic-paper-to-ppt`，即可只链接对应 Skill。
+把最后一个目录替换为 `xiaobei-skill-rebuild-image-in-powerpoint` 或 `xiaobei-skill-academic-paper-to-ppt`，即可只链接对应 Skill。
 
 ## 仓库结构
 
@@ -193,7 +193,7 @@ xiaobei-skill/
 │   │   ├── assets/
 │   │   ├── references/
 │   │   └── scripts/
-│   ├── xiaobei-skill-academic-image-to-ppt/
+│   ├── xiaobei-skill-rebuild-image-in-powerpoint/
 │   │   ├── SKILL.md
 │   │   ├── agents/openai.yaml
 │   │   ├── requirements.txt
@@ -217,7 +217,7 @@ xiaobei-skill/
 
 ```bash
 python -m pip install -r skills/xiaobei-skill-image-to-vba/requirements.txt
-python -m pip install -r skills/xiaobei-skill-academic-image-to-ppt/requirements.txt
+python -m pip install -r skills/xiaobei-skill-rebuild-image-in-powerpoint/requirements.txt
 python -m pip install -r skills/xiaobei-skill-academic-paper-to-ppt/requirements.txt
 ```
 

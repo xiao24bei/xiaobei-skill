@@ -32,8 +32,8 @@ rendered/
 !assets/
 !assets/gallery/
 !assets/gallery/*.png
-!assets/gallery/academic-image-to-ppt/
-!assets/gallery/academic-image-to-ppt/*.jpg
+!assets/gallery/rebuild-image-in-powerpoint/
+!assets/gallery/rebuild-image-in-powerpoint/*.jpg
 !assets/gallery/academic-paper-to-ppt/
 !assets/gallery/academic-paper-to-ppt/*.png
 !assets/contact/
