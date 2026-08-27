@@ -35,8 +35,9 @@
 
 | 展示名 | 调用名 | 适用任务 | 独立目录 |
 |---|---|---|---|
-| **小北在读研 · Image to VBA** | `$xiaobei-skill-image-to-vba` | 将学术图、科研示意图、幻灯片或 UI 截图重建为可编辑 Office VBA Shapes | [`skills/xiaobei-skill-image-to-vba`](skills/xiaobei-skill-image-to-vba) |
-| **小北在读研 · Academic Paper to PPT** | `$xiaobei-skill-academic-paper-to-ppt` | 将论文、文献、报告或技术文档生成图片式学术答辩 / 项目汇报 PPT | [`skills/xiaobei-skill-academic-paper-to-ppt`](skills/xiaobei-skill-academic-paper-to-ppt) |
+| **小北在读研 · Image to VBA** | `$xiaobei-skill-image-to-vba` | 图片 → 可编辑 Office Shapes 与 VBA 代码 | [`skills/xiaobei-skill-image-to-vba`](skills/xiaobei-skill-image-to-vba) |
+| **小北在读研 · Academic Image to PPT** | `$xiaobei-skill-academic-image-to-ppt` | 学术图片 → 可编辑 PPTX；Windows 支持可见 PowerPoint 重建 | [`skills/xiaobei-skill-academic-image-to-ppt`](skills/xiaobei-skill-academic-image-to-ppt) |
+| **小北在读研 · Academic Paper to PPT** | `$xiaobei-skill-academic-paper-to-ppt` | 论文 / 报告 → 图片式整套答辩或项目汇报 PPTX | [`skills/xiaobei-skill-academic-paper-to-ppt`](skills/xiaobei-skill-academic-paper-to-ppt) |
 
 内部调用名使用小写英文字母与连字符，保证安装和调用兼容；Codex 界面中的 `display_name` 统一使用“**小北在读研 ·**”作为品牌前缀。
 
@@ -72,6 +73,21 @@
 | 输入原图 | 可编辑还原效果 |
 |---|---|
 | ![Case 2 source](assets/gallery/case-02-source.png) | ![Case 2 editable preview](assets/gallery/case-02-editable-preview.png) |
+
+### 小北在读研 · Academic Image to PPT
+
+这个 Skill 面向“给一张学术图，直接还原成可编辑 PowerPoint”的任务。Windows 环境下可在左侧 PowerPoint 中逐区、逐对象可见绘制；复杂生物机制图会采用“原生形状 + 局部原子素材”的 Hybrid 方式，保留文字、箭头、连接关系和可编辑结构。
+
+[![Academic Image to PPT 可见重建演示](assets/gallery/academic-image-to-ppt/demo-cover.jpg)](https://github.com/xiao24bei/xiaobei-skill/releases/tag/academic-image-to-ppt-demo-20260827)
+
+**[观看 / 下载 56 秒完整演示](https://github.com/xiao24bei/xiaobei-skill/releases/download/academic-image-to-ppt-demo-20260827/xiaobei-skill-academic-image-to-ppt-demo.mp4)**
+
+> 演示录制时使用的是开发名 `$academic-image-to-ppt`；公开仓库已统一为 `$xiaobei-skill-academic-image-to-ppt`，安装和调用请以公开名称为准。
+
+- 左侧是持续保持可见的 PowerPoint，右侧是 Codex 的分区绘制过程。
+- 示例从空白页逐步完成复杂生物机制图，并保留约 240 个可编辑对象。
+- 完整视频放在 GitHub Release，不进入 Skill 目录和仓库 Git 历史，避免用户安装单个 Skill 时额外下载约 52 MB 演示素材。
+- 演示仅用于展示工作流与产出形式；参考图及论文内容归原作者和相关权利人所有。
 
 ### 小北在读研 · Academic Paper to PPT
 
@@ -122,6 +138,12 @@ Codex 应先列出当前清单，不直接安装仓库根目录。
 Use $skill-installer to install https://github.com/xiao24bei/xiaobei-skill/tree/main/skills/xiaobei-skill-image-to-vba
 ```
 
+只安装 Academic Image to PPT：
+
+```text
+Use $skill-installer to install https://github.com/xiao24bei/xiaobei-skill/tree/main/skills/xiaobei-skill-academic-image-to-ppt
+```
+
 只安装 Academic Paper to PPT：
 
 ```text
@@ -132,6 +154,10 @@ Use $skill-installer to install https://github.com/xiao24bei/xiaobei-skill/tree/
 
 ```text
 Use $xiaobei-skill-image-to-vba to convert this uploaded academic image into editable Office VBA Shapes code.
+```
+
+```text
+Use $xiaobei-skill-academic-image-to-ppt to redraw this academic image as an editable PowerPoint.
 ```
 
 ```text
@@ -146,7 +172,7 @@ mkdir -p ~/.codex/skills
 ln -s "$(pwd)/xiaobei-skill/skills/xiaobei-skill-image-to-vba" ~/.codex/skills/xiaobei-skill-image-to-vba
 ```
 
-把最后一个目录替换为 `xiaobei-skill-academic-paper-to-ppt`，即可只链接第二个 Skill。
+把最后一个目录替换为 `xiaobei-skill-academic-image-to-ppt` 或 `xiaobei-skill-academic-paper-to-ppt`，即可只链接对应 Skill。
 
 ## 仓库结构
 
@@ -167,6 +193,12 @@ xiaobei-skill/
 │   │   ├── assets/
 │   │   ├── references/
 │   │   └── scripts/
+│   ├── xiaobei-skill-academic-image-to-ppt/
+│   │   ├── SKILL.md
+│   │   ├── agents/openai.yaml
+│   │   ├── requirements.txt
+│   │   ├── references/
+│   │   └── scripts/
 │   └── xiaobei-skill-academic-paper-to-ppt/
 │       ├── SKILL.md
 │       ├── agents/openai.yaml
@@ -185,6 +217,7 @@ xiaobei-skill/
 
 ```bash
 python -m pip install -r skills/xiaobei-skill-image-to-vba/requirements.txt
+python -m pip install -r skills/xiaobei-skill-academic-image-to-ppt/requirements.txt
 python -m pip install -r skills/xiaobei-skill-academic-paper-to-ppt/requirements.txt
 ```
 

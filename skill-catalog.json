@@ -11,6 +11,12 @@
       "description": "将学术图、科研示意图、幻灯片或 UI 截图重建为可编辑 Office VBA Shapes。"
     },
     {
+      "name": "xiaobei-skill-academic-image-to-ppt",
+      "display_name": "小北在读研 · Academic Image to PPT",
+      "path": "skills/xiaobei-skill-academic-image-to-ppt",
+      "description": "将学术图、机制图和幻灯片截图高保真重建为可编辑 PowerPoint，Windows 环境支持可见绘制。"
+    },
+    {
       "name": "xiaobei-skill-academic-paper-to-ppt",
       "display_name": "小北在读研 · Academic Paper to PPT",
       "path": "skills/xiaobei-skill-academic-paper-to-ppt",
