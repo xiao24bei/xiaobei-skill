@@ -37,6 +37,7 @@
 |---|---|---|---|
 | **小北在读研 · Image to VBA** | `$xiaobei-skill-image-to-vba` | 图片 → 可编辑 Office Shapes 与 VBA 代码 | [`skills/xiaobei-skill-image-to-vba`](skills/xiaobei-skill-image-to-vba) |
 | **小北在读研 · Rebuild Image in PowerPoint** | `$xiaobei-skill-rebuild-image-in-powerpoint` | 让 Codex 直接操作 PowerPoint，将整张参考图片逐对象还原为可编辑 PPT | [`skills/xiaobei-skill-rebuild-image-in-powerpoint`](skills/xiaobei-skill-rebuild-image-in-powerpoint) |
+| **小北在读研 · PowerPoint 蜂群重绘** | `$xiaobei-skill-rebuild-image-in-powerpoint-swarm` | 基础重绘版升级：在 Windows PowerPoint 里用六光标实时绘图，可录制 MP4 | [`skills/xiaobei-skill-rebuild-image-in-powerpoint-swarm`](skills/xiaobei-skill-rebuild-image-in-powerpoint-swarm) |
 | **小北在读研 · Academic Paper to PPT** | `$xiaobei-skill-academic-paper-to-ppt` | 论文 / 报告 → 图片式整套答辩或项目汇报 PPTX | [`skills/xiaobei-skill-academic-paper-to-ppt`](skills/xiaobei-skill-academic-paper-to-ppt) |
 
 内部调用名使用小写英文字母与连字符，保证安装和调用兼容；Codex 界面中的 `display_name` 统一使用“**小北在读研 ·**”作为品牌前缀。
@@ -45,6 +46,22 @@
 > 这个仓库是 **Skill 合集索引**，根目录故意不放 `SKILL.md`，因此根目录不能作为单个 Skill 安装。若用户只说“安装 `xiaobei-skill`”而没有指定子 Skill，Codex 应先读取 [`skill-catalog.json`](skill-catalog.json)，展示清单并让用户选择；选择后只安装对应子目录。除非用户明确要求，否则不要猜测，也不要一次安装全部 Skills。
 
 ## 效果展示
+
+### PowerPoint 蜂群重绘
+
+这是 Rebuild Image in PowerPoint 的升级版。给 Codex 一张参考图，Windows 桌面版 PowerPoint 会打开画布，默认用六个带角色标签的光标，依次铺设版面、放置插图、连接箭头和填写文字。完成后可以在 PPT 里改文字、移动形状或调整连线。显微图、器官插画等复杂局部可作为独立图片移动、缩放或替换。
+
+[![六光标在机制图上放置插图、绘制面板和标注](assets/gallery/rebuild-image-in-powerpoint-swarm/drawing-process.jpg)](https://github.com/xiao24bei/xiaobei-skill/releases/download/rebuild-image-in-powerpoint-swarm-20261125/drawing-process.mp4)
+
+| 录屏案例 | 可以看到什么 | 原始 MP4 |
+|---|---|---|
+| 竖版科研技术路线图 | 研究目标、机制分解和验证步骤分区落位，多列文字逐步填入 | [22.6 秒](https://github.com/xiao24bei/xiaobei-skill/releases/download/rebuild-image-in-powerpoint-swarm-20261125/research-roadmap.mp4) |
+| 横版环境工程汇报页 | 反应器示意、流程箭头和标签逐步组成一页工艺介绍 | [27.3 秒](https://github.com/xiao24bei/xiaobei-skill/releases/download/rebuild-image-in-powerpoint-swarm-20261125/engineering-slide.mp4) |
+| 多面板生物医学机制图 | 六光标分别处理插图、面板和标注，连接多个区域 | [30.0 秒](https://github.com/xiao24bei/xiaobei-skill/releases/download/rebuild-image-in-powerpoint-swarm-20261125/drawing-process.mp4) |
+
+实时绘制需要 Windows 桌面版 PowerPoint、带 Tkinter 的 Python 3.10+ 和 `pywin32`。录制 MP4 时还需将支持 `gdigrab` 的 FFmpeg 加入 PATH。macOS 可使用单独配置的 Office CLI 离线重建。
+
+[安装此 Skill](https://github.com/xiao24bei/xiaobei-skill/tree/main/skills/xiaobei-skill-rebuild-image-in-powerpoint-swarm) · [下载独立安装包与三段录屏](https://github.com/xiao24bei/xiaobei-skill/releases/tag/rebuild-image-in-powerpoint-swarm-20261125)
 
 ### 小北在读研 · Image to VBA
 
@@ -144,6 +161,12 @@ Use $skill-installer to install https://github.com/xiao24bei/xiaobei-skill/tree/
 Use $skill-installer to install https://github.com/xiao24bei/xiaobei-skill/tree/main/skills/xiaobei-skill-rebuild-image-in-powerpoint
 ```
 
+只安装 PowerPoint 蜂群重绘版：
+
+```text
+Use $skill-installer to install https://github.com/xiao24bei/xiaobei-skill/tree/main/skills/xiaobei-skill-rebuild-image-in-powerpoint-swarm
+```
+
 只安装 Academic Paper to PPT：
 
 ```text
@@ -151,6 +174,10 @@ Use $skill-installer to install https://github.com/xiao24bei/xiaobei-skill/tree/
 ```
 
 安装后可分别调用：
+
+```text
+用 $xiaobei-skill-rebuild-image-in-powerpoint-swarm 把这张参考图重绘成可编辑 PPT，在 Windows PowerPoint 里展示六光标绘制过程，并录制 MP4。
+```
 
 ```text
 Use $xiaobei-skill-image-to-vba to convert this uploaded academic image into editable Office VBA Shapes code.
@@ -172,7 +199,7 @@ mkdir -p ~/.codex/skills
 ln -s "$(pwd)/xiaobei-skill/skills/xiaobei-skill-image-to-vba" ~/.codex/skills/xiaobei-skill-image-to-vba
 ```
 
-把最后一个目录替换为 `xiaobei-skill-rebuild-image-in-powerpoint` 或 `xiaobei-skill-academic-paper-to-ppt`，即可只链接对应 Skill。
+按上方清单同时替换命令中的源目录名和目标目录名，例如 `xiaobei-skill-rebuild-image-in-powerpoint-swarm`、`xiaobei-skill-rebuild-image-in-powerpoint` 或 `xiaobei-skill-academic-paper-to-ppt`，即可只链接对应 Skill。
 
 ## 仓库结构
 
@@ -199,6 +226,12 @@ xiaobei-skill/
 │   │   ├── requirements.txt
 │   │   ├── references/
 │   │   └── scripts/
+│   ├── xiaobei-skill-rebuild-image-in-powerpoint-swarm/
+│   │   ├── SKILL.md
+│   │   ├── agents/openai.yaml
+│   │   ├── requirements.txt
+│   │   ├── references/
+│   │   └── scripts/
 │   └── xiaobei-skill-academic-paper-to-ppt/
 │       ├── SKILL.md
 │       ├── agents/openai.yaml
@@ -218,6 +251,7 @@ xiaobei-skill/
 ```bash
 python -m pip install -r skills/xiaobei-skill-image-to-vba/requirements.txt
 python -m pip install -r skills/xiaobei-skill-rebuild-image-in-powerpoint/requirements.txt
+python -m pip install -r skills/xiaobei-skill-rebuild-image-in-powerpoint-swarm/requirements.txt
 python -m pip install -r skills/xiaobei-skill-academic-paper-to-ppt/requirements.txt
 ```
 

@@ -1,0 +1,8 @@
+interface:
+  display_name: "小北在读研 · PowerPoint 蜂群重绘"
+  short_description: "高保真学术/图示可编辑 PPT 还原，内置 6 光标多智能体协同实时绘制"
+  brand_color: "#2563EB"
+  default_prompt: "用 $xiaobei-skill-rebuild-image-in-powerpoint-swarm 把这张参考图高保真还原为可编辑 PowerPoint，并用多智能体光标协同在 PowerPoint 中实时绘制出来。"
+
+policy:
+  allow_implicit_invocation: true

@@ -17,6 +17,12 @@
       "description": "让 Codex 直接操作 PowerPoint，将整张参考图片逐对象还原为可编辑 PPT。"
     },
     {
+      "name": "xiaobei-skill-rebuild-image-in-powerpoint-swarm",
+      "display_name": "小北在读研 · PowerPoint 蜂群重绘",
+      "path": "skills/xiaobei-skill-rebuild-image-in-powerpoint-swarm",
+      "description": "基础重绘版的蜂群升级版。在 Windows PowerPoint 中用六个角色光标分工重绘参考图，生成可编辑 PPT，并可选录制 MP4。"
+    },
+    {
       "name": "xiaobei-skill-academic-paper-to-ppt",
       "display_name": "小北在读研 · Academic Paper to PPT",
       "path": "skills/xiaobei-skill-academic-paper-to-ppt",

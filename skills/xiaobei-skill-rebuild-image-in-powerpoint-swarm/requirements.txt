@@ -1,0 +1,2 @@
+# Windows live drawing uses PowerPoint COM. MP4 recording also needs FFmpeg on PATH.
+pywin32; sys_platform == "win32"

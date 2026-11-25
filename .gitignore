@@ -34,6 +34,8 @@ rendered/
 !assets/gallery/*.png
 !assets/gallery/rebuild-image-in-powerpoint/
 !assets/gallery/rebuild-image-in-powerpoint/*.jpg
+!assets/gallery/rebuild-image-in-powerpoint-swarm/
+!assets/gallery/rebuild-image-in-powerpoint-swarm/*.jpg
 !assets/gallery/academic-paper-to-ppt/
 !assets/gallery/academic-paper-to-ppt/*.png
 !assets/contact/

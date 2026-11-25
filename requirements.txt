@@ -1,2 +1,3 @@
 -r skills/xiaobei-skill-image-to-vba/requirements.txt
 -r skills/xiaobei-skill-academic-paper-to-ppt/requirements.txt
+-r skills/xiaobei-skill-rebuild-image-in-powerpoint-swarm/requirements.txt
