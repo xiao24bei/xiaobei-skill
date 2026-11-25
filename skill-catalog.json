@@ -18,9 +18,9 @@
     },
     {
       "name": "xiaobei-skill-rebuild-image-in-powerpoint-swarm",
-      "display_name": "小北在读研 · PowerPoint 蜂群重绘",
+      "display_name": "小北在读研 · PowerPoint 蜂群绘图",
       "path": "skills/xiaobei-skill-rebuild-image-in-powerpoint-swarm",
-      "description": "基础重绘版的蜂群升级版。在 Windows PowerPoint 中用六个角色光标分工重绘参考图，生成可编辑 PPT，并可选录制 MP4。"
+      "description": "以多 Agent 蜂群模式协同操作 Windows PowerPoint，分工搭建版面、放置插图、连接箭头和排布标注，将技术路线图、机制图及汇报页重建为可编辑幻灯片。"
     },
     {
       "name": "xiaobei-skill-academic-paper-to-ppt",

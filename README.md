@@ -37,7 +37,7 @@
 |---|---|---|---|
 | **小北在读研 · Image to VBA** | `$xiaobei-skill-image-to-vba` | 图片 → 可编辑 Office Shapes 与 VBA 代码 | [`skills/xiaobei-skill-image-to-vba`](skills/xiaobei-skill-image-to-vba) |
 | **小北在读研 · Rebuild Image in PowerPoint** | `$xiaobei-skill-rebuild-image-in-powerpoint` | 让 Codex 直接操作 PowerPoint，将整张参考图片逐对象还原为可编辑 PPT | [`skills/xiaobei-skill-rebuild-image-in-powerpoint`](skills/xiaobei-skill-rebuild-image-in-powerpoint) |
-| **小北在读研 · PowerPoint 蜂群重绘** | `$xiaobei-skill-rebuild-image-in-powerpoint-swarm` | 基础重绘版升级：在 Windows PowerPoint 里用六光标实时绘图，可录制 MP4 | [`skills/xiaobei-skill-rebuild-image-in-powerpoint-swarm`](skills/xiaobei-skill-rebuild-image-in-powerpoint-swarm) |
+| **小北在读研 · PowerPoint 蜂群绘图** | `$xiaobei-skill-rebuild-image-in-powerpoint-swarm` | 多 Agent 协同操作 PowerPoint，把科研参考图逐层重建为可编辑幻灯片 | [`skills/xiaobei-skill-rebuild-image-in-powerpoint-swarm`](skills/xiaobei-skill-rebuild-image-in-powerpoint-swarm) |
 | **小北在读研 · Academic Paper to PPT** | `$xiaobei-skill-academic-paper-to-ppt` | 论文 / 报告 → 图片式整套答辩或项目汇报 PPTX | [`skills/xiaobei-skill-academic-paper-to-ppt`](skills/xiaobei-skill-academic-paper-to-ppt) |
 
 内部调用名使用小写英文字母与连字符，保证安装和调用兼容；Codex 界面中的 `display_name` 统一使用“**小北在读研 ·**”作为品牌前缀。
@@ -47,21 +47,23 @@
 
 ## 效果展示
 
-### PowerPoint 蜂群重绘
+### PowerPoint 蜂群绘图 · 多 Agent 协同重建
 
-这是 Rebuild Image in PowerPoint 的升级版。给 Codex 一张参考图，Windows 桌面版 PowerPoint 会打开画布，默认用六个带角色标签的光标，依次铺设版面、放置插图、连接箭头和填写文字。完成后可以在 PPT 里改文字、移动形状或调整连线。显微图、器官插画等复杂局部可作为独立图片移动、缩放或替换。
+给 Codex 一张科研参考图，蜂群模式会把它拆成版面、插图、连线和标注等绘图任务。在 Windows 桌面版 PowerPoint 中，六个角色光标在同一张幻灯片上协同作图，按照对象的位置、层级和连接关系逐步还原整页。
+
+重绘完成后，你可以直接在 PPT 里修改实验分组名称、调整流程箭头，或替换一张显微图。文字、形状和连线都是原生 PowerPoint 对象，复杂插图作为独立图片保留。
 
 [![六光标在机制图上放置插图、绘制面板和标注](assets/gallery/rebuild-image-in-powerpoint-swarm/drawing-process.jpg)](https://github.com/xiao24bei/xiaobei-skill/releases/download/rebuild-image-in-powerpoint-swarm-20261125/drawing-process.mp4)
 
-| 录屏案例 | 可以看到什么 | 原始 MP4 |
+| 绘图案例 | 协同绘制的内容 | 查看演示 |
 |---|---|---|
 | 竖版科研技术路线图 | 研究目标、机制分解和验证步骤分区落位，多列文字逐步填入 | [22.6 秒](https://github.com/xiao24bei/xiaobei-skill/releases/download/rebuild-image-in-powerpoint-swarm-20261125/research-roadmap.mp4) |
 | 横版环境工程汇报页 | 反应器示意、流程箭头和标签逐步组成一页工艺介绍 | [27.3 秒](https://github.com/xiao24bei/xiaobei-skill/releases/download/rebuild-image-in-powerpoint-swarm-20261125/engineering-slide.mp4) |
 | 多面板生物医学机制图 | 六光标分别处理插图、面板和标注，连接多个区域 | [30.0 秒](https://github.com/xiao24bei/xiaobei-skill/releases/download/rebuild-image-in-powerpoint-swarm-20261125/drawing-process.mp4) |
 
-实时绘制需要 Windows 桌面版 PowerPoint、带 Tkinter 的 Python 3.10+ 和 `pywin32`。录制 MP4 时还需将支持 `gdigrab` 的 FFmpeg 加入 PATH。macOS 可使用单独配置的 Office CLI 离线重建。
+实时绘制需要 Windows 桌面版 PowerPoint、带 Tkinter 的 Python 3.10+ 和 `pywin32`。macOS 可使用单独配置的 Office CLI 离线重建。
 
-[安装此 Skill](https://github.com/xiao24bei/xiaobei-skill/tree/main/skills/xiaobei-skill-rebuild-image-in-powerpoint-swarm) · [下载独立安装包与三段录屏](https://github.com/xiao24bei/xiaobei-skill/releases/tag/rebuild-image-in-powerpoint-swarm-20261125)
+[安装此 Skill](https://github.com/xiao24bei/xiaobei-skill/tree/main/skills/xiaobei-skill-rebuild-image-in-powerpoint-swarm) · [独立安装包与三个绘图案例](https://github.com/xiao24bei/xiaobei-skill/releases/tag/rebuild-image-in-powerpoint-swarm-20261125)
 
 ### 小北在读研 · Image to VBA
 
@@ -176,7 +178,7 @@ Use $skill-installer to install https://github.com/xiao24bei/xiaobei-skill/tree/
 安装后可分别调用：
 
 ```text
-用 $xiaobei-skill-rebuild-image-in-powerpoint-swarm 把这张参考图重绘成可编辑 PPT，在 Windows PowerPoint 里展示六光标绘制过程，并录制 MP4。
+用 $xiaobei-skill-rebuild-image-in-powerpoint-swarm 启动蜂群模式，在 PowerPoint 里协同重绘这张参考图。保留原图的分区、文字和箭头关系，交付可继续编辑的 PPT。
 ```
 
 ```text
