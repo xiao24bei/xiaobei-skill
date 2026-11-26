@@ -33,7 +33,7 @@ if ($CheckOnly) {
     return
 }
 
-# Automatically ensure PowerPoint is visibly open, maximized, and showing the target deck.
+# Automatically ensure PowerPoint is visibly open, maximized, and framed cleanly for live Codex drawing.
 if (-not $isObserver -and $config.deck) {
     $deckPath = if ([System.IO.Path]::IsPathRooted([string]$config.deck)) {
         [System.IO.Path]::GetFullPath([string]$config.deck)
@@ -64,6 +64,14 @@ if (-not $isObserver -and $config.deck) {
         $ppt.Visible = -1
         try { $ppt.WindowState = 3 } catch {} # ppWindowMaximized
         if ($CreateBlank -or (-not (Test-Path -LiteralPath $deckPath))) {
+            # Close an existing open handle on the exact same path before recreating blank deck
+            for ($i = $ppt.Presentations.Count; $i -ge 1; $i--) {
+                try {
+                    if ([System.IO.Path]::GetFullPath($ppt.Presentations.Item($i).FullName).Equals($deckPath, [System.StringComparison]::OrdinalIgnoreCase)) {
+                        $ppt.Presentations.Item($i).Close()
+                    }
+                } catch {}
+            }
             $pres = $ppt.Presentations.Add(-1)
             if ($config.canvas -and $config.canvas.Count -eq 2) {
                 $pres.PageSetup.SlideWidth = [single]$config.canvas[0]
@@ -74,8 +82,12 @@ if (-not $isObserver -and $config.deck) {
         } else {
             $pres = $ppt.Presentations.Open($deckPath, 0, 0, -1)
         }
-        $pres.Windows.Item(1).Activate()
-        Start-Sleep -Milliseconds 250
+        $win = $pres.Windows.Item(1)
+        try { $win.ViewType = 9 } catch {} # ppViewNormal
+        try { if ($win.SplitVertical -lt 96) { $win.SplitVertical = 100 } } catch {} # collapse empty Notes pane
+        try { $win.View.ZoomToFit = $true } catch {}
+        $win.Activate()
+        Start-Sleep -Milliseconds 300
     }
 }
 
@@ -89,9 +101,13 @@ if (-not $isObserver -and $ExportPreview) {
 }
 
 $proc = Start-Process -FilePath $python -ArgumentList $argList -PassThru -WindowStyle Hidden -RedirectStandardOutput $stdout -RedirectStandardError $stderr
+# Keep a process handle owned by .NET. Windows PowerShell 5.1 can
+# return a null ExitCode on the object returned by Start-Process.
+$proc = [Diagnostics.Process]::GetProcessById($proc.Id)
+$null = $proc.Handle
 $timer = [Diagnostics.Stopwatch]::StartNew()
 $ready = $false
-while ($timer.Elapsed.TotalSeconds -lt 25) {
+while ($timer.Elapsed.TotalSeconds -lt 28) {
     if ($proc.HasExited) {
         $errText = if (Test-Path -LiteralPath $stderr) { Get-Content -Raw -Encoding UTF8 -LiteralPath $stderr } else { "" }
         throw "Swarm cursor engine exited ($($proc.ExitCode)). $errText"
@@ -104,7 +120,7 @@ while ($timer.Elapsed.TotalSeconds -lt 25) {
 }
 if (-not $ready) {
     if (-not $proc.HasExited) { $proc.Kill() }
-    throw "PowerPoint swarm overlay did not attach within 25s. Check $stderr and ensure the presentation is active."
+    throw "PowerPoint swarm overlay did not attach within 28s. Check $stderr and ensure the presentation is active."
 }
 
 if ($Wait) {
@@ -115,10 +131,30 @@ if ($Wait) {
     }
 }
 
+$summary = $null
+$logPath = Join-Path $planDir ("{0}-swarm-log.json" -f [System.IO.Path]::GetFileNameWithoutExtension($planFile))
+if ($Wait -and (Test-Path -LiteralPath $logPath)) {
+    try {
+        $rawLog = Get-Content -Raw -Encoding UTF8 -LiteralPath $logPath | ConvertFrom-Json
+        $summary = [pscustomobject]@{
+            confirmed = $rawLog.confirmed
+            drawing_seconds = $rawLog.drawing_seconds
+            avg_overlay_fps = $rawLog.avg_overlay_fps
+            effective_pace = $rawLog.effective_pace
+            record_scope = $rawLog.record_scope
+            record_backend = $rawLog.record_backend
+            audit_hard_findings = if ($rawLog.audit) { $rawLog.audit.hard_finding_count } else { $null }
+            audit_auto_fixes = if ($rawLog.audit) { $rawLog.audit.auto_fix_count } else { $null }
+            swarm_log = $logPath
+        }
+    } catch {}
+}
+
 [pscustomobject]@{
     pid = $proc.Id
     driver = $driverName
     log = $stdout
     errors = $stderr
     completed = $proc.HasExited
-} | ConvertTo-Json -Compress
+    summary = $summary
+} | ConvertTo-Json -Depth 5 -Compress

@@ -1,8 +1,8 @@
-"""High-end passive multi-agent cursor companion overlay for powerpoint_draw_sequence batches.
+"""Crisp passive multi-agent cursor companion overlay for powerpoint_draw_sequence batches.
 
 Attaches read-only to the active PowerPoint window and renders 6+ studio-colored
-Figma-style cursors with motion trails, agent role pills, CAD framing boxes, and
-commit ripples synchronized to named shapes arriving on the slide.
+Figma/PowerPoint-style cursors with selection frames, role pills, and DPI-safe rendering
+synchronized to named shapes arriving on the slide.
 """
 import argparse
 from collections import deque
@@ -85,7 +85,7 @@ def observer_thread(deck, slide_idx, cues, state, stop):
                     return
             except pywintypes.com_error:
                 state["visible"] = False
-            stop.wait(0.08)
+            stop.wait(0.06)
     except Exception:
         state["error"] = traceback.format_exc()
     finally:
@@ -138,8 +138,8 @@ class CompanionOverlay:
         gui.ShowWindow(self.hwnd, wc.SW_HIDE)
         self.lanes = {}
         self.origins = {}
-        self.trails = {i: deque(maxlen=10) for i in range(self.count)}
-        self.ripples = []
+        self.trails = {i: deque(maxlen=6) for i in range(self.count)}
+        self.flashes = []
         self.timeout = timeout
         self.last_done = 0
         self.last_change = time.monotonic()
@@ -193,16 +193,18 @@ class CompanionOverlay:
         gui.SetWindowPos(self.hwnd, wc.HWND_TOPMOST, x, y, w, h, wc.SWP_NOACTIVATE | wc.SWP_SHOWWINDOW)
         cv = self.canvas
         cv.delete("all")
-        u = max(1.0, min(2.3, w / 1280.0))
+        u = max(1.0, min(2.2, w / 1280.0))
         done_names = self.state["done_names"]
 
         busy = set()
         for idx, (lane, started, origin) in list(self.lanes.items()):
             cue = self.cues[idx]
             if cue["name"] in done_names:
-                end_pt = cue["points"][-1]
-                self.origins[lane] = end_pt
-                self.ripples.append((now, lane, end_pt))
+                pts = cue["points"]
+                self.origins[lane] = pts[-1]
+                xs = [p[0] for p in pts]
+                ys = [p[1] for p in pts]
+                self.flashes.append((now, lane, (min(xs), min(ys), max(xs), max(ys))))
                 del self.lanes[idx]
             else:
                 busy.add(lane)
@@ -218,52 +220,65 @@ class CompanionOverlay:
             busy.add(lane)
             self.lanes[idx] = (lane, now, self.origins.get(lane, (sw * 0.12, sh * 0.08)))
 
-        self.ripples = [rp for rp in self.ripples if now - rp[0] < 0.35]
-        for stamp, lane, (ax, ay) in self.ripples:
-            age = (now - stamp) / 0.35
+        # Crisp PowerPoint-style selection lock flash on commit (instead of cartoon circles)
+        self.flashes = [fl for fl in self.flashes if now - fl[0] < 0.22]
+        for stamp, lane, (rx0, ry0, rx1, ry1) in self.flashes:
             _, col, _ = AGENTS[lane % len(AGENTS)]
-            r = u * (4 + 24 * age)
-            px, py = ax * w / sw, ay * h / sh
-            cv.create_oval(px - r, py - r, px + r, py + r, outline=col, width=max(1.0, 1.8 * u * (1 - age)))
+            x0, y0, x1, y1 = rx0 * w / sw, ry0 * h / sh, rx1 * w / sw, ry1 * h / sh
+            if x1 - x0 > 6 and y1 - y0 > 6:
+                cv.create_rectangle(x0, y0, x1, y1, outline=col, width=1.4 * u)
+                hs = 2.4 * u
+                for hx, hy in ((x0, y0), (x1, y0), (x0, y1), (x1, y1)):
+                    cv.create_rectangle(hx - hs, hy - hs, hx + hs, hy + hs, fill="white", outline=col, width=1.1 * u)
 
+        placed_pills = []
         for idx, (lane, started, origin) in self.lanes.items():
             cue = self.cues[idx]
             name, col, tint = AGENTS[lane % len(AGENTS)]
             pts = [(a * w / sw, b * h / sh) for a, b in cue["points"]]
             orig = (origin[0] * w / sw, origin[1] * h / sh)
             t = max(0.0, now - started)
-            if t < 0.28:
-                tr = walk([orig, pts[0]], ease(t / 0.28))
+            if t < 0.24:
+                tr = walk([orig, pts[0]], ease(t / 0.24))
             else:
-                tr = walk(pts, ease((t - 0.28) / 0.42))
+                tr = walk(pts, ease((t - 0.24) / 0.36))
                 ax, ay = pts[0]
                 bx, by = tr[-1]
                 kind = cue.get("kind", "box")
                 if kind == "line":
-                    cv.create_line(*[v for p in tr for v in p], fill=col, width=2.0 * u, capstyle="round")
+                    cv.create_line(*[v for p in tr for v in p], fill=col, width=1.8 * u, capstyle="round")
                 elif kind == "text":
                     cv.create_line(bx, by - 6 * u, bx, by + 6 * u, fill=col, width=1.6 * u)
                 else:
-                    cv.create_rectangle(min(ax, bx), min(ay, by), max(ax, bx), max(ay, by), outline=col, width=1.5 * u, dash=(5, 3))
+                    x0, y0, x1, y1 = min(ax, bx), min(ay, by), max(ax, bx), max(ay, by)
+                    cv.create_rectangle(x0, y0, x1, y1, outline=col, width=1.4 * u)
+                    hs = 2.4 * u
+                    for hx, hy in ((x0, y0), (x1, y0), (x0, y1), (x1, y1)):
+                        cv.create_rectangle(hx - hs, hy - hs, hx + hs, hy + hs, fill="white", outline=col, width=1.1 * u)
             px, py = tr[-1]
-            trail = self.trails[lane]
-            trail.append((px, py))
-            tlist = list(trail)
-            for k in range(len(tlist) - 1):
-                frac = (k + 1) / len(tlist)
-                cv.create_line(tlist[k][0], tlist[k][1], tlist[k + 1][0], tlist[k + 1][1],
-                               fill=col if frac > 0.7 else tint, width=max(1.0, 2.0 * u * frac), capstyle="round")
             arrow = [(0, 0), (0, 16.5), (4.6, 12.6), (8.4, 19.6), (11.0, 18.2), (7.4, 11.4), (13.8, 11.4)]
             cv.create_polygon(*[v for dx, dy in arrow for v in (px + dx * u, py + dy * u)],
                               fill=col, outline="white", width=1.3 * u)
-            lx, ly = px + 13 * u, py + 13 * u
-            font_px = max(8, int(round(7.8 * u)))
-            ph = 16.0 * u
-            pw = max(46 * u, (len(name) * font_px * 0.72) + 18 * u)
-            if lx + pw > w - 6:
-                lx = max(4, px - pw - 10 * u)
-            if ly + ph > h - 6:
-                ly = max(4, py - ph - 10 * u)
+
+            font_px = max(9, int(round(9.5 * u)))
+            ph = 17.0 * u
+            pw = max(48 * u, (len(name) * font_px * 0.64) + 18 * u)
+            candidates = [
+                (px + 13 * u, py + 13 * u),
+                (px - pw - 8 * u, py + 13 * u),
+                (px + 13 * u, py - ph - 8 * u),
+                (px - pw - 8 * u, py - ph - 8 * u),
+            ]
+            lx, ly = candidates[0]
+            for cx_p, cy_p in candidates:
+                clx = max(4.0, min(w - pw - 4.0, cx_p))
+                cly = max(4.0, min(h - ph - 4.0, cy_p))
+                box = (clx, cly, clx + pw, cly + ph)
+                if not any(min(box[2], p[2]) > max(box[0], p[0]) and min(box[3], p[3]) > max(box[1], p[1]) for p in placed_pills):
+                    lx, ly = clx, cly
+                    break
+            placed_pills.append((lx, ly, lx + pw, ly + ph))
+
             b = 1.4 * u
             oh = ph + 2 * b
             ox0, oy0, ox1, oy1 = lx - b, ly - b, lx + pw + b, ly + ph + b
@@ -275,7 +290,8 @@ class CompanionOverlay:
             cv.create_oval(lx, ly, lx + ph, ly + ph, fill=col, outline="")
             cv.create_oval(lx + pw - ph, ly, lx + pw, ly + ph, fill=col, outline="")
             cv.create_rectangle(lx + irad, ly, lx + pw - irad, ly + ph, fill=col, outline="")
-            cv.create_text(lx + pw * 0.5, ly + ph * 0.5, text=name, fill="white", font=("Segoe UI", font_px, "bold"))
+            # Negative pixel font size = 100% immune to Windows DPI scaling
+            cv.create_text(lx + pw * 0.5, ly + ph * 0.5, text=name, fill="white", font=("Segoe UI", -font_px, "bold"))
 
     def run(self):
         threading.Thread(target=observer_thread, args=(self.deck, self.slide_idx, self.cues, self.state, self.stop), daemon=True).start()

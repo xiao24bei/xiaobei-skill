@@ -17,7 +17,7 @@ For every visible region, assign one class:
 | Class | Examples | PowerPoint treatment |
 |---|---|---|
 | `semantic_native` | headings, labels, legends, borders, arrows, connectors, axes, regular tables, simple symbols | Native text/shape/line/table/chart. |
-| `complex_visual_core` | mouse, animal, organ, cell cross-section, mitochondrion, tissue illustration, dense molecular artwork | Atomic image asset, preferably transparent-background PNG; keep the surrounding semantics native. |
+| `complex_visual_core` | mouse, animal, organ, cell cross-section, mitochondrion, tissue illustration, dense molecular artwork, or dense 3D-shaded multi-layer particle clusters (>20 overlapping shaded spheres) | Atomic image asset, preferably transparent-background PNG; keep all surrounding labels, arrows, formulas, and charts native. |
 | `evidence_raster` | microscopy field, thermal image, histology, brain photograph, heatmap | Atomic image asset; split montages and channel stacks into individual tiles. |
 | `reconstructable_plot` | survival curve, bar chart, regular scatter/line plot | Native editable chart or native axes/series. |
 | `composite_exception` | A visual core whose internal labels cannot be separated without destroying the source | Smallest possible atomic crop, documented as an exception; do not use it for a whole panel. |
