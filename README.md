@@ -53,10 +53,10 @@
 
 重绘完成后，你可以直接在 PPT 里修改实验分组名称、调整流程箭头，或替换一张显微图。文字、形状和连线都是原生 PowerPoint 对象，复杂插图作为独立图片保留。
 
-<a href="https://github.com/xiao24bei/xiaobei-skill/releases/download/rebuild-image-in-powerpoint-swarm-20261125/engineering-slide.mp4">
+<a href="https://github.com/xiao24bei/xiaobei-skill/releases/download/rebuild-image-in-powerpoint-swarm-20261125/drawing-process.mp4">
   <picture>
-    <source media="(prefers-reduced-motion: reduce)" srcset="assets/gallery/rebuild-image-in-powerpoint-swarm/swarm-overview.jpg">
-    <img src="assets/gallery/rebuild-image-in-powerpoint-swarm/swarm-overview.gif" alt="蜂群绘图全景：六个彩色角色光标在同一页 PPT 的标题、反应器流程和右下角示意图上分工绘制">
+    <source media="(prefers-reduced-motion: reduce)" srcset="assets/gallery/rebuild-image-in-powerpoint-swarm/mechanism-overview.jpg">
+    <img src="assets/gallery/rebuild-image-in-powerpoint-swarm/mechanism-overview.gif" alt="机制图重绘全景：六个彩色角色光标在不同面板中绘制插图、连接箭头并添加标注">
   </picture>
 </a>
 
