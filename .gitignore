@@ -47,6 +47,4 @@ rendered/
 !skills/**/assets/*.svg
 !skills/**/assets/.gitkeep
 !examples/.gitkeep
-!examples/xiaobei-skill-academic-paper-to-ppt/
-!examples/xiaobei-skill-academic-paper-to-ppt/README.md
-!examples/xiaobei-skill-academic-paper-to-ppt/defense_presentation.pptx
+!skills/xiaobei-skill-academic-paper-to-ppt/references/approved-style/*.png

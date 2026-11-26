@@ -1,61 +1,78 @@
-# Visual Style Specification
+# Visual Style Specification — 中国高校/国自然「蓝白红」顶配高密度学术风（v5.0）
 
-## Style selection rule
+## 1. 风格优先级
 
-Use this style priority:
+1. 用户在当前对话中给出的显式风格要求（如指定某套色系、体系 A 或体系 B）。
+2. 用户上传的 PPT/PPTX 视觉模板（仅提取色彩、字体层次、顶底栏结构与页型节奏，严禁复制占位事实）。
+3. 下方默认 **中国高校 / 国自然顶配「蓝白红（Navy-White-Crimson）」双核学术视觉系统**。
 
-1. Current user instructions.
-2. User-provided PPT/PPTX template.
-3. Default academic preset below.
+---
 
-When a PPT/PPTX template is provided, analyze it first and use it as the main visual reference for all `$imagegen` visual preview and slide-page generation. Extract:
+## 2. 共同美学灵魂：权威深蓝 × 学术绛红 × 纯净白底 × 结构化高信息密度
 
-- Slide aspect ratio and page families
-- Main colors and accent colors
-- Font feel and title hierarchy
-- Cover, directory, section divider, content, chart/table, summary, and closing-page patterns
-- Spacing, margins, line systems, color blocks, image treatments, and recurring motifs
-- Typical page density and the way the template separates section pages from content pages
+### 精确 Design Tokens（HEX 色表）
+- **画布底色**：纯白 `#FFFFFF` 为主（极浅冰灰蓝 `#F2F6FB` / `#EAF1F9` 用作核心结论横幅底、表格交替斑马行、卡片浅底分区），明亮锐利、完美适配答辩大厅投影仪。
+- **主架构色（学院深蓝 / 基金宝蓝）**：
+  - 体系 A 权威深海蓝：`#0B2954`（顶/底全宽通栏、主标题、实心卡片标题条、深色表头、主流程图标）；
+  - 体系 B 经典学院宝蓝：`#105091` / `#0C56AE`（编号主标题、实心卡片头、深蓝横幅、主结构箭头与主曲线）。
+- **灵魂点睛色（学术绛红 / 朱砂红，全套唯一强强调色）**：
+  - `#B51B22` / `#9E161C` / `#B81D24`
+  - **精准职责**：顶部核心论点关键词、右侧红顶「结论」锚定卡、关键算子/创新模块名标红、核心增益数值（如 `+2.30 dB`、`-42.45%`、`λ=1.5`）标红、关键拐点引线与页码短红线。克制使用（占画面面积 ≤ 12%）。
+- **中性结构色**：
+  - 正文深墨黑：`#1A202C`；次级注释/图注/角标：`#4A5A70`；精致 1px 细实线/虚线框：`#B8C8DC` / `#CBD5E1`（微圆角 `2–4px` 或利落直角）。
+- **可选弱辅色**：柔和浅蓝 `#DCE8F6`、柔和浅橙 `#FCE8D5`、柔和浅绿 `#E2F0D9`。
 
-Do not copy placeholder text from the template as factual content. The template controls visual style and structure only; the uploaded source document controls factual content.
+### 字体层级与「结构化高含金量密度」铁律（v5.0 关键升级！）
+- **彻底告别“巨字大白框空壳”**：旧版单页只写 40–60 个超大号黑体字，导致满屏空洞口号、导师看半天看不到公式与机理！
+- **分层高密度标准**：
+  - **核心正文页（方法 / 对比 / 消融 / 定位页）**：单页可见中文控制在 **140–260 字** + **1–3 组精确论文公式或 5–8 行紧凑多指标科研表格/统计图**！
+  - **如何在高信息量下保持清晰不糊字？** 严禁写不分段的长篇散文，必须采用**「三级微结构卡片语法」**：
+    1. 卡片实心宝蓝/绛红顶条写明**精准功能标签**（如 `阶段一联合优化目标 · 式(6)–(8)`，而非笼统写 `训练目标`）；
+    2. 卡内分 **2–3 条短促紧凑的项目符号（`•`）或独立公式块**，每条 22–42 字，采用**中等精致学术字号**（留出合理行距，绝不用撑爆卡片的巨号海报字）；
+    3. 每卡仅将 **1–2 个最核心机制词、公式项或增益数字**用学术绛红/宝蓝加粗标重，让导师既能 3 秒扫出主干，细看又有扎实的数学公式与归因逻辑！
+  - **封面 / 目录 / 过渡 / 致谢页**：保持庄重呼吸留白（但第 2 页目录每章必带 1 行核心科学子问题说明与 `PXX–PYY` 页码区间，严禁只放 4 行裸词！）。
 
-If no PPT/PPTX template is provided, use this default academic preset for all pages generated with `$imagegen`:
+---
 
-- Theme: formal academic thesis defense
-- Target field: science and engineering paper presentation
-- Tone: professional, stable, clean, concise
-- Main colors:
-  - light gray background
-  - dark navy blue headings
-  - cyan blue accents
-  - white content cards
-- Layout:
-  - 16:9 widescreen
-  - strong page title hierarchy
-  - consistent header/footer system
-  - generous whitespace
-  - content-dense but not cluttered
-- Visual components:
-  - academic charts
-  - clean tables
-  - modular process diagrams
-  - technical route diagrams
-  - model architecture blocks
-  - experiment result dashboards
-  - conclusion cards
-- Typography:
-  - clean sans-serif
-  - strong title/subtitle contrast
-  - clear Chinese text hierarchy
-- Avoid:
-  - cartoon style
-  - overly colorful design
-  - decorative backgrounds
-  - low-density business pitch style
-  - casual or playful elements
+## 3. 两大锁定骨架变体（全套二选一，严禁跨体系串台！）
 
-For the visual preview stage, use `$imagegen` to generate a single multi-page thumbnail board showing the full deck style.
+### 体系 A：「学院深蓝红·答辩版」（适合开题/毕业/基金答辩、社科/经管/工程综合报告）
+- **锚点参考**：[`style-a-contact-sheet.png`](approved-style/style-a-contact-sheet.png)、[`style-a-framework.png`](approved-style/style-a-framework.png)、[`style-a-data-dashboard.png`](approved-style/style-a-data-dashboard.png)、[`style-a-section-divider.png`](approved-style/style-a-section-divider.png)。
+- **顶栏 Chrome**：顶部全宽深海军蓝通栏横带（`#0B2954`，高 ~7.5%），左侧白色加粗章节编号断言主标题，右侧极简白色汇报标识（严禁抄袭样张校徽校名！）。
+- **卡片与结论锚定**：实心深蓝小标题条白底细框卡 + 右侧 `22%` 宽红顶白底「结论」锚定卡（宽幅路线或大图页改为顶栏下方全宽深红白字核心结论横幅）。
+- **底栏与页码**：底部全宽深海军蓝通栏（`#0B2954`，高 ~7%），居中白色页码配短红下划线。
 
-For the final PPT stage, use `$imagegen` to generate one full-slide image per page and keep visual consistency.
+### 体系 B：「白蓝红科研·理工生医版」（适合 AI/计算机/生医/物理/工程组会深度精读与技术答辩）
+- **锚点参考**：[`style-b-contact-sheet.png`](approved-style/style-b-contact-sheet.png)、[`style-b-hypothesis.png`](approved-style/style-b-hypothesis.png)、[`style-b-science-method.png`](approved-style/style-b-science-method.png)、[`style-c-engineering-pipeline.png`](approved-style/style-c-engineering-pipeline.png)。
+- **顶栏 Chrome**：纯白顶区左对齐**章节编号宝蓝加粗断言主标题**（核心词绛红点睛）+ 极细宝蓝横线 + 全宽 **浅冰蓝底（`#EAF1F9`）核心结论横幅**（一句凝练全局机制/发现，**严禁与下方卡片文字重复！**）。
+- **卡片与图表质感**：实心宝蓝/绛红小标题条 + 纯白微影细框结构化卡片（内含标准斜体数学公式、张量维度与因果要点）+ 无损论文原图框 / Origin 级多指标图表 + 宝蓝表头蓝白浅斑马纹紧凑三线表。
+- **底栏与页码全套 100% 锁定（严禁跨体系污染！）**：
+  - 正文页底部统一极细宝蓝线，左下角极简来源短标（如 `Tex-LDM · 图2 · 式(6)–(8)`），右下角**全套统一深海军蓝斜角梯形页码徽标（白字 `05/18`）**；
+  - **体系隔离铁律**：体系 B 的任何页面（尤其是倒数第 2 页总结页 `L09`）**严禁混入体系 A 底部的校园礼堂建筑线稿**！第 `N` 页致谢页底带右下角页码必须保持深海军蓝统一调性，严禁突变为刺眼大红色块！
 
-Do not produce this visual style as text-only design advice, SVG/vector art, HTML/CSS/canvas output, screenshots, or manually composed placeholders. The required output for Stage 2 and Stage 3 is bitmap imagery produced through `$imagegen`.
+---
+
+## 4. 首尾精雕与非原图页高密度标准
+
+1. **第 1 页封面（`L01` · [`front-cover-anchor.png`](approved-style/front-cover-anchor.png)）**：主标题沉稳深蓝 + 凝练技术路线副题 + 精密学科矢量主视觉 + **底部 `13%–15%` 厚重深海蓝通栏（内嵌细白竖线分隔的四大核心模块词）**。
+2. **第 2 页汇报提纲（`L02a` · [`front-toc-anchor.png`](approved-style/front-toc-anchor.png)）**：左 `28%` 通用几何深蓝竖带“汇报提纲” + 右 4–5 张精致白卡，**每卡必须同时包含「大号编号 + 粗体章名 + 1 行具体科学问题/方法实证子题 + 右端页码区间 `P03–P04`」**，严禁做成只有 4 行大字的光秃秃目录！
+3. **第 4 页既有技术路线与研究定位（`L03b`）**：用 **4 行×5 列紧凑蓝白对比表或四象限路线剖析卡**直观对比代表性基线（物理模型 / 生成空间 / 细节机制 / 核心瓶颈）+ 底部或右侧红框锚定本文破局闭环。
+4. **定量对比与消融页（`L06 / L07 / L08`）**：
+  - 公开集/自建集对比必须兼顾**紧凑多方法四指标代表表 + 关键指标对比图 + 像素/感知权衡归因卡**（绝不只画 2 个点的稀疏折线！）；
+  - 逐步消融页必须呈现**多指标联合增益（如折线/柱图展示 PSNR 与 SSIM 双轴跃升 + 右侧紧凑四指标表与每步具体物理分工）**，绝不塞教科书指标定义式！
+5. **倒数第 2 页总结页（`L09` · [`closing-synthesis-anchor.png`](approved-style/closing-synthesis-anchor.png)）**与**末页致谢讨论页（`L10b` · [`closing-thanks-anchor.png`](approved-style/closing-thanks-anchor.png)）**：保持模块化三栏+闭环链+总判断锚定与全屏居中对称美学，杜绝全宽巨字 Word 表单。
+
+---
+
+## 5. 十大视觉与内容跑偏黑名单（MUST NEVER APPEAR）
+
+1. **严禁 40–70 字巨号字体“提词卡空壳页”（每张卡片只写一句话大白话）**。
+2. **严禁顶栏横幅与卡片正文同句复读，或同一公式在同页左右画两遍**。
+3. **严禁在实验/消融页塞入 `PSNR`、`FID`、`SSIM` 等本科教科书通用评价指标定义公式凑数**。
+4. **严禁角标标注了论文公式号（如 `式(6)-(8)`），画面上却漏画对应公式**。
+5. **严禁薄荷绿胶囊 / 3D 商业广告渲染 / 低幼简笔画团块**。
+6. **严禁抄袭锚点校徽校名、跨学科脑图底纹，或将体系 A 校园建筑底栏混入体系 B**。
+7. **严禁四层粗蓝框套盒（Box-in-Box Overload）**。
+8. **严禁把小参数表或总结页画成全宽 3–4 行巨字 Word 水平表单**。
+9. **严禁丢页码、跳页码或末页右下角页码色块突变**。
+10. **严禁内部审稿话术（`原文未明确说明`、`原文第X页`、`基于原文归纳`）上屏**。

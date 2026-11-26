@@ -1,6 +1,6 @@
 interface:
   display_name: "小北在读研 · Academic Paper to PPT"
-  short_description: "小北出品：把论文、文献和报告生成完整图片式学术答辩 PPT。"
+  short_description: "Advisor-convincing 3-stage academic PPT decks with full DOCX/PDF equation & table parsing, 4 evidence ledgers, lossless real paper figure embedding, and anti-shallow content gates."
   icon_large: "./assets/academic-paper-to-ppt.svg"
-  brand_color: "#0B3A5B"
-  default_prompt: "Use $xiaobei-skill-academic-paper-to-ppt to turn this source document and optional PPT template into a strict image-only presentation, with one complete generated slide image per page."
+  brand_color: "#0B2954"
+  default_prompt: "Use $xiaobei-skill-academic-paper-to-ppt to convert this research paper or document into an advisor-convincing Navy-White-Crimson strict image-only academic PPT deck following the v5.0 3-stage pipeline: (1) extract full text, OMML/PDF equations, structured tables & real/stitched figures, build the 4 evidence ledgers + high-density outline (ppt_outline.md) and pass validate_outputs.py --outline-only, (2) generate locked visual scheme preview, (3) generate full slides with real equations and multi-baseline trade-off analysis, losslessly embed real paper figures, attach speaker notes, and validate."

@@ -108,34 +108,13 @@
 - 完整视频放在 GitHub Release，不进入 Skill 目录和仓库 Git 历史，避免用户安装单个 Skill 时额外下载约 52 MB 演示素材。
 - 演示仅用于展示工作流与产出形式；参考图及论文内容归原作者和相关权利人所有。
 
-### 小北在读研 · Academic Paper to PPT
+### 小北在读研 · Academic Paper to PPT v5.0
 
-以下直接展示一套 16 页材料科学汇报中的复杂完整单页。案例同时覆盖工艺链、层级结构、跨尺度表征、实验数据、机理图、热成像和时间序列等内容。
+这张图节选自《后摩尔时代芯片结构材料的热设计与表征》的 16 页组会汇报，展示了其中 6 页。从三维堆叠的散热约束，到石墨烯的测量边界，再到热线与热桥两种测量方法，可以看到原文数据和论文插图如何进入同一套幻灯片。
 
-#### 仿珍珠层界面策略：工艺链 + 层级结构 + 化学机制
+![芯片热设计文献精读的六页节选，包含封面、三维堆叠、石墨烯导热、热线与热桥、同位点测量和材料筛选](assets/gallery/academic-paper-to-ppt/chip-thermal-design-v5.png)
 
-![仿珍珠层层级界面策略](assets/gallery/academic-paper-to-ppt/01-interface-strategy.png)
-
-#### 跨尺度证据：SEM / AFM / 接触角 / FTIR / XPS / XRD / DFT
-
-![从形貌到分子相互作用的多模态证据](assets/gallery/academic-paper-to-ppt/02-multimodal-evidence.png)
-
-#### 光热除雪与脱冰：光谱 + 热成像 + 时间序列 + 机理
-
-![高效光热转换驱动除雪与脱冰](assets/gallery/academic-paper-to-ppt/03-photothermal-deicing.png)
-
-#### 报废材料再利用：吸附位点 + 分子机制 + 动力学 + 模拟
-
-![残余材料转化为水处理吸附剂](assets/gallery/academic-paper-to-ppt/04-adsorption-regeneration.png)
-
-#### 抗菌与可降解性：培养皿 + 45 天抗霉 + 植物体系 + 土埋实验
-
-![服役期抗菌与处置期可降解](assets/gallery/academic-paper-to-ppt/05-antibacterial-biodegradation.png)
-
-另有一套 14 页医学论文完整示例，可查看该 Skill 生成的封面、研究设计、数据图表、机制图、结论与展望：
-
-- [下载完整示例 PPTX](examples/xiaobei-skill-academic-paper-to-ppt/defense_presentation.pptx)
-- 示例仅用于展示 Skill 的产出形式；论文署名、DOI 与研究内容归原作者及相关权利人所有。
+[安装此 Skill](skills/xiaobei-skill-academic-paper-to-ppt) · [下载 v5.0 独立安装包](https://github.com/xiao24bei/xiaobei-skill/releases/download/academic-paper-to-ppt-v5.0/xiaobei-skill-academic-paper-to-ppt.zip)
 
 ## 推荐安装方式
 
@@ -212,8 +191,6 @@ xiaobei-skill/
 ├── assets/
 │   ├── contact/
 │   └── gallery/
-├── examples/
-│   └── xiaobei-skill-academic-paper-to-ppt/
 ├── skills/
 │   ├── xiaobei-skill-image-to-vba/
 │   │   ├── SKILL.md

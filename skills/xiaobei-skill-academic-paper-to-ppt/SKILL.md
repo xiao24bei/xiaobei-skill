@@ -1,271 +1,151 @@
 ---
 name: xiaobei-skill-academic-paper-to-ppt
-description: "Use for 小北在读研 / XiaoBei academic paper-to-PPT workflows: generate thesis-defense or project-report decks from uploaded papers, literature, reports, technical documents, and optional PPTX visual templates. Produces a source-grounded outline, an imagegen visual scheme, one complete bitmap per slide, an imagegen provenance manifest, and an image-only PPTX. Do not use when the user needs editable slide text or native editable charts."
+description: "Convert academic papers (.pdf/.docx), theses, grant proposals, and research reports into professor-convincing, publication-grade 16:9 Chinese Navy-White-Crimson (学院蓝白红) strict image-only PPT decks for lab group meetings (组会汇报/文献精读), thesis proposals (开题答辩), grant reports (基金结题), and graduation defenses (毕业答辩). Follows a strict 3-stage pipeline with a Stage-1 Advisor Rigor Gate: (1) Full-fidelity paper/OMML-equation/table parsing, real figure cropping/stitching & 4-ledger high-density outline (ppt_outline.md), (2) Locked visual scheme preview (visual_preview.png), and (3) Full-slide $imagegen generation with lossless real paper figure embedding, complete paper equations, multi-baseline trade-off attribution, Speaker Notes, and automated content+visual validation."
+metadata:
+  version: "5.0"
 ---
 
-# 小北在读研 · Academic Paper to PPT
+# Academic Paper To PPT (v5.0 — 导师五连问闭环 · 四大前置台账 · 拒绝口号空壳版)
 
-## Core Behavior
+Turn research papers (`.pdf` or `.docx`), proposals, and theses into high-rigor, professor-convincing 16:9 Chinese academic PPT decks (`defense_presentation.pptx`) that **thoroughly explain the paper's problem positioning, mathematical mechanisms, training/inference protocols, multi-baseline evidence, and causal trade-offs**—eliminating shallow 40-word slogan flashcards, dropped equations, and generic AI filler.
 
-When this skill is triggered, execute the workflow in this exact order:
+## Core Non-Negotiable Contracts
 
-1. Analyze the uploaded source document
-2. If the user provides a PPT/PPTX template, analyze the template's visual style and page structure
-3. Create `ppt_outline.md`
-4. Generate one complete visual preview scheme based strictly on `ppt_outline.md` using `$imagegen`, then immediately display that image inline in the chat
-5. Generate every slide page as a full-page image using `$imagegen`; immediately display each completed page image inline in the chat before waiting for the whole deck
-6. Create `imagegen_manifest.json` recording the selected `$imagegen` generation method and every generated asset
-7. Assemble the generated slide images into a `.pptx` file where each image fills one complete slide
-8. Validate that required output files exist and match the imagegen manifest
+1. **Clear 3-Stage Pipeline + Stage-1 Depth Gate (Strict Execution Order)**:
+   - **Stage 1（全量解析、四大证据台账与高密度大纲阶段）**：运行 `scripts/extract_paper_assets.py` 提取全文、OMML/LaTeX 编号公式、结构化数据表及高清原图/拼合组图 → 建立**四大前置证据台账**（原图台账 + 编号公式上屏台账 + 既有基线卡点与训练/推理协议台账 + 多维实证与权衡台账）→ 编写高含金量 `outputs/ppt_outline.md`，并**强制通过 `scripts/validate_outputs.py --base-dir ./outputs --outline-only` 深度门禁后**再进入 Stage 2！
+   - **Stage 2（视觉方案阶段）**：锁定「学院蓝白红」`Style Bible`（体系 A 或 体系 B，或用户模板）→ 用 `$imagegen` 生成并审校全套缩略图视觉方案 `outputs/imagegen/visual_preview.png`；
+   - **Stage 3（高密度生图、真图精嵌与双重质检阶段）**：逐页用 `$imagegen` 生成完整高清页图 → 对引用论文原图的页面用 `scripts/embed_paper_figure.py` **像素级无损精嵌论文真图（支持单图 `L11a/L11b` 与双图并列 `L11c`）** → 8 维导师级质检 → 装配带演讲备注的严格全图 `outputs/defense_presentation.pptx` 并通过 `validate_outputs.py`。
+   - Never skip stages unless the user explicitly requests a single stage (or asks to pause after each stage for manual review).
 
-Never skip stages unless the user explicitly requests only one stage.
+2. **Pass the "Advisor's 5-Question Interrogation" (导师五连问硬核内容标准 — 拒绝提词卡式空壳！)**:
+   Every deck MUST thoroughly answer the 5 questions a thesis advisor or reviewer immediately asks:
+   - **Q1 场景约束与物理/数学问题本质**：具体应用工况有什么特殊约束？核心退化/矛盾机理是什么？问题如何形式化建模（必须给出完整建模方程、各符号定义与映射实现，如 $\Psi(\cdot)$ 的具体网络结构）？
+   - **Q2 既有路线谱系与本文创新定位（完整论文必设独立 `1.2` 页！）**：**严禁跳过相关工作直接讲自身网络！** 必须具名梳理 3–4 条代表性技术路线及关键基线（如确定性回归 `Retinexformer`、像素扩散 `Diff-Retinex`、非扩散细节通路 `DiffLight`、二元潜在扩散 `Reti-Diff`），明确各自做对了什么、**卡在哪个结构瓶颈**，从而导出本文不可替代的破局闭环。
+   - **Q3 模块张量流、完整编号公式与训练/推理边界**：每个方法模块必须讲清**输入/输出张量及维度变换、核心算子与论文编号公式本体、参数冻结 vs 联合更新策略、阶段损失函数各项物理分工与权重系数（如 $\lambda_2=1.5$）、以及测试推理如何脱离真值参考图独立运行**。
+   - **Q4 多路线实证全貌、指标权衡与消融分工归因**：
+     - 对比实验必须展示**跨技术路线的代表基线矩阵（≥ 4–6 个代表方法）与全部核心互补指标**（**严禁把十几个对比方法删剩 2 个点连线！**）；
+     - 当不同指标或不同数据集出现分化（如感知指标 FID/BIQE 最优而逐像素 PSNR 存在取舍，或工业实测集全指标反超）时，必须给出**物理/统计层面的深度归因**；
+     - 消融实验必须给出**各变体移除后的多指标退化幅度与物理崩溃原因**，以及逐步叠加模块时**哪一步拉升结构指标（如 SSIM）、哪一步优化感知/边缘指标**（**严禁只画单列指标配“提升特征一致性 / 增强全局建模能力 / 进一步提升重建精度”等贴到任何论文都能用的 AI 万能套话！**）。
+   - **Q5 真实工程边界与可验证展望**：交代推理延迟/算力开销、极端失效场景（如强镜面反光）、下游任务闭环验证方案及论文明确提出的技术演进路径（如蒸馏加速、偏振/跨模态融合）。
 
-Strict image-only contract:
-- A final slide image means the whole finished PPT page is baked into one bitmap, including Chinese title, body text, labels, diagrams, tables, and page visual design.
-- The final `.pptx` must contain one full-slide image per slide and no editable visible text boxes.
-- Background-only slide images are invalid. Do not generate text-free templates, blank layout backgrounds, placeholder panels, blank areas for later text, or editable-text overlays.
-- Prompts for final slide images must not include phrases such as `text-free`, `no readable words`, `background template`, `blank areas`, `editable Chinese text`, `text to be added later`, or equivalent wording.
-- If `$imagegen` cannot generate complete page images with the required text, retry with shorter full-page prompts or switch to the other allowed `$imagegen` mode. If complete page images still cannot be produced, stop at image generation and report the failed stage. Do not assemble a fallback PPT.
+3. **Formula Integrity, Substantive Density & Zero-Echo Law (公式必上屏 · 高密度干货 · 零复读零注水)**:
+   - **Cited Equations MUST Appear On-Screen**: Whenever a slide cites paper equations (`式(1)`, `式(2)–(5)`, `式(6)–(8)`, `式(9)–(13)`) in its rationale or footer, **those exact paper equations MUST be written explicitly on the slide canvas**! Never put `式(6)-(8)` in the footer while rendering zero equations on the slide!
+   - **STRICT BAN on Textbook Metric Formula Padding**: **NEVER** pad experimental or ablation slides with textbook definitions of generic evaluation metrics (`PSNR = 10 log10(MAX^2/MSE)`, `FID = ||μ_r - μ_g||^2 + Tr(...)`, `SSIM = ...`) unless proposing a new metric is the paper's actual contribution! Formula space belongs strictly to the paper's own modeling, operator, and loss equations.
+   - **Substantive Per-Slide Density (140–260 Chinese chars + Formulas/Data)**: Every core content slide (`3 .. N-1`, excluding Cover/TOC/Divider/Thanks) MUST carry **140–260 Chinese characters of structured academic substance** in `### 上屏文案` (organized cleanly into `1 句顶栏定调结论 + 2–3 张各司其职的结构化剖析卡（每卡 2–3 条紧凑机制/公式/数据要点）+ 1 条底部边界/启示总结条`). **Slides with < 100 chars of bare 12-word slogans are strictly rejected!**
+   - **Zero Verbatim Echo**: Slide title, top thesis banner, body cards, and bottom takeaway bar MUST each carry distinct information (`论点标题 → 全局机制横幅 → 具体公式/张量/数据拆解卡 → 适用边界底栏`). **NEVER repeat the banner sentence inside a card, and NEVER render the same formula twice on one slide!**
 
-Chat-visible image contract:
-- Apply this contract to both built-in `image_gen` and CLI generation. Changing the image backend must not make generated images invisible to the user.
-- Stage 2 produces one visual-scheme image. As soon as it exists, show it in the chat with local-image Markdown using its absolute path, for example `![PPT 视觉方案](/absolute/path/visual_preview.png)`.
-- During Stage 3, show each completed slide image individually as soon as it is available. Label it briefly as `第 X/N 页`, then render that page with its absolute local path. A text-only progress message such as “已生成 6 页” does not satisfy this requirement.
-- Do not wait until all pages finish before showing them. Do not replace per-page visibility with only a contact sheet, folder path, file count, or final PPTX link.
-- In CLI mode, run generation in a monitorable process and poll for newly completed files. After each poll, display every newly completed `slide_XX.png` individually before continuing to wait. Limited concurrency is allowed, but the chat must expose each completed page rather than hiding the batch until completion.
-- In built-in mode, the tool result may render automatically; still add the brief `第 X/N 页` label and preserve/copy the selected image into the workspace for manifesting and PPT assembly.
-- After all pages are visible, optionally add a complete contact sheet for convenient overview, then provide the final PPTX.
+4. **Real Paper Figure Integration (No Toy Hallucinations!)**:
+   - Extract/crop real architecture diagrams, module diagrams, qualitative comparisons, and multi-panel plots into `outputs/source_assets/figures/` in Stage 1 (for `.docx` manuscripts, `extract_paper_assets.py` automatically extracts embedded figures AND stitches multi-panel `(a)..(h)` comparison tables into `composite_panel_XX.png`).
+   - Use `L11a` (left figure + right 3-card deep analysis), `L11b` (top wide figure + bottom 3-column deep analysis), or `L11c` (top dual side-by-side figures + bottom 3-column architecture/formula/mechanism breakdown), compositing real figures losslessly via `scripts/embed_paper_figure.py`.
 
-Required image-generation dependency:
-- The visual preview and full-slide generation stages must load and follow the installed `$imagegen` skill.
-- Use built-in `image_gen` first when the user does not specify a generation mode.
-- Use CLI mode when the user explicitly requests it or when a real built-in attempt is unavailable or fails, but only through the runtime, endpoint, and credential mechanism authorized in the current user's `$imagegen` workflow.
-- Do not hardcode a maintainer's workstation path, account name, private endpoint, or credential source. Never display, log, or persist credentials.
-- In CLI mode, write generated image files under `outputs/imagegen/` and record method `imagegen_cli_fallback` in `imagegen_manifest.json`.
-- Use a Python environment with the packages in `requirements.txt` for PowerPoint assembly and validation.
-- Do not replace `$imagegen` with textual visual suggestions, SVG/vector/code-native drawings, HTML/CSS/canvas mockups, manual diagrams, or a generic image-generation placeholder.
-- When built-in mode is used, copy the selected generated files from `$CODEX_HOME/generated_images/...` or the workspace into `outputs/imagegen/generated_slides/`, and record method `built_in_image_gen` in `imagegen_manifest.json`.
-- If an explicitly selected CLI attempt fails to generate real files, try built-in `image_gen` unless the user asked for CLI only. If the default built-in attempt fails, use CLI only when the current environment authorizes and supports that fallback.
-- If neither CLI fallback nor built-in `$imagegen` can generate real image files, stop at that stage and report the incomplete stage. Do not assemble a PPT from non-imagegen substitutes.
-- A visual preview generated with `$imagegen` is not enough. Every final slide image recorded in `imagegen_manifest.json` must also be generated with `$imagegen`.
-- If CLI fallback fails only for long Chinese prompts, that is not permission to generate text-free backgrounds. First shorten each prompt while preserving the requirement that the final image contains the slide title and key visible text. Then try built-in `image_gen` if needed. Stop rather than replacing text with editable PowerPoint objects.
+5. **Strict Image-Only Slide Canvas, Provenance & Zero Style Cross-Contamination**:
+   - Every final slide in `defense_presentation.pptx` contains **exactly one unified 16:9 bitmap** and **zero editable visible text boxes**, with oral scripts (`演讲备注`, 130–220 chars/slide) attached to PPTX Speaker Notes (`ppt/notesSlides/`).
+   - Load `$CODEX_HOME/skills/.system/imagegen/SKILL.md` before Stage 2 and Stage 3 when available (`built_in_image_gen` primary; `imagegen_cli_fallback` via `gpt-image-2` on transient/bounded failure; never print `OPENAI_API_KEY`). Never use HTML/SVG/python-pptx text shapes as slide substitutes.
+   - **Zero Style Leaks**: Never copy sample institution names (`南京审计大学`, `北京交通大学`, `NIH/NIDCD`), cross-discipline motifs (brain/neurons), or Style A campus-building footer line-art onto a Style B deck; keep bottom-right page badge color/geometry 100% identical across ALL slides.
 
-Do not expand the full Markdown outline in the chat.
-Do not output long analysis.
-Do not invent information that is not in the uploaded document.
-Do not cite or use external sources unless the user explicitly asks for external supplementation.
+---
 
-## Visual Style Priority
+## Visual Style System (默认「学院蓝白红」双核体系)
 
-Use this priority order for the deck's visual style:
+Priority: (1) Current user instructions → (2) User-provided PPT/PPTX template (visual system only) → (3) Default **学院蓝白红（Navy-White-Crimson）** in `references/visual-style-spec.md`:
+- **体系 A「学院深蓝红·答辩版」**（开题/毕业/基金答辩、社科/经管/工程综合报告默认；锚点 `style-a-*.png`）：深海蓝 `#0B2954` 顶底通栏 + 实心深蓝小标题条白底卡片 + 右置红顶「结论」锚定卡 + 大数字章节过渡页 + 居中白字红线页码。
+- **体系 B「白蓝红科研·理工生医版」**（AI/计算机/生医/物理/工程组会精读与技术答辩默认；锚点 `style-b-*.png`, `style-c-engineering-pipeline.png`）：纯白底 + 编号宝蓝 `#105091` 断言式主标题与细蓝线 + 浅冰蓝底红蓝双色核心结论横幅 + 实心宝蓝/绛红头微影结构化卡片 + 论文无损原图框/Origin 高精多维图表 + 统一深蓝斜角梯形页码 `XX/NN`（严禁混入体系 A 校园建筑线稿或末页突变红底角标）。
+- Curated front & closing anchors: `front-cover-anchor.png`, `front-toc-anchor.png`, `closing-synthesis-anchor.png`, `closing-thanks-anchor.png`.
 
-1. Explicit style instructions from the user in the current request.
-2. A user-provided PPT/PPTX template, when available.
-3. The default academic visual preset in `references/visual-style-spec.md`.
+Before Stage 1, read:
+- `references/academic-narrative-guide.md`
+- `references/layout-library.md`
+- `references/visual-style-spec.md`
+- `references/slide-prompt-guide.md`
+- `references/outline-template.md`
 
-If a template is provided, treat it as a visual and structural reference only:
-- Extract its slide size, color palette, typography, title hierarchy, section-page design, content-page design, chart/table treatment, spacing, and visual motifs.
-- Prefer the template's cover, directory, section divider, body, chart/table, summary, and closing-page patterns when generating the visual preview and full-slide images.
-- Use the template's topic distribution to decide the outline's page grouping and content density, but do not copy its placeholder text as source content.
-- Do not force the generated PPT to use every page from the template. Compress or expand the template's page families into a source-appropriate academic or project-report narrative.
-- Do not add market analysis, team information, intellectual property, or implementation-condition pages unless those topics are present in the uploaded source document or explicitly requested by the user.
-- If the template conflicts with source-document fidelity, source-document fidelity wins.
+---
 
-If no template is provided, use the default academic preset from `references/visual-style-spec.md`.
+## Stage 1: Full-Fidelity Asset/Equation Extraction, 4 Evidence Ledgers & Deep Outline (`outputs/ppt_outline.md`)
 
-## Stage 1: Document Parsing and Markdown PPT Outline
+1. **Extract Full Paper Text, OMML/PDF Equations, Structured Tables & Real Figures**:
+   ```bash
+   PYTHON_BIN="$(command -v python3)"
+   [ -x "$HOME/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3" ] && \
+     PYTHON_BIN="$HOME/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3"
+   "$PYTHON_BIN" scripts/extract_paper_assets.py --input <source_file> --out-dir ./outputs/source_assets
+   ```
+   - Read BOTH `outputs/source_assets/extracted_text.md` AND `outputs/source_assets/figure_guide.md` thoroughly (including all extracted numbered equations `式(1)..式(K)`, structured data tables `表1..表M`, and stitched/embedded figures).
+   - For PDF inputs, visually inspect `outputs/source_assets/pages/page_XX.png` and crop every high-value figure cleanly at high resolution into `outputs/source_assets/figures/` via `extract_paper_assets.py crop`. For `.docx` inputs, inspect all `figures/image*.png` and auto-stitched `figures/composite_panel_*.png` visually to verify crispness and exact figure-number mapping.
 
-Input:
-- A user-uploaded literature paper, academic article, research report, technical document, PDF, DOCX, Markdown file, or plain text document.
-- Optional: a user-provided PPT/PPTX template used only for visual style, page-family structure, and outline density guidance.
+2. **Build the 4 Mandatory Pre-Outline Ledgers & Persuasive Outline (`outputs/ppt_outline.md`)**:
+   - **Page Budget for Full Papers** (give methods, related-work positioning, equations, and experiments enough room to breathe!):
+     - **组会深度文献精读**：**默认 16–18 页（完整论文硬下限 ≥ 15 页）**
+     - **开题答辩 / 基金申请**：**默认 16–20 页**
+     - **毕业 / 结题答辩**：**默认 18–22 页**
+     - Short notes / single-figure briefs: 5–8 pages.
+   - **Enforce the 8-Module Advisor-Convincing Structure**:
+     1. `L01` 庄重学术封面（含底部深蓝四大模块通栏，1 页）
+     2. `L02a` 深蓝竖栏汇报提纲（每章必须写出**核心科学子问题 + 方法/实验抓手 + 页码区间 `P03–P04`**，严禁只写 8 字裸标题！1 页）
+     3. `L03` + `L03b` **研究背景、物理/数学问题建模 & 既有技术路线卡点对比（必设 2 页！）**：
+        - `1.1` 工业/科学场景痛点、退化混叠机理与本文核心建模方程（如二元 vs 三元方程 + 各符号与非线性映射具体结构）；
+        - `1.2` 既有主流路线对比矩阵（如表 1 四类代表方法：确定性回归 / 像素扩散 / 结构细节分支 / 二元潜在扩散各自局限）与本文破局定位闭环。
+     4. `L11a/b/c` + `L04/L05` **核心方法、编号公式与训练/推理协议深度拆解（4–5 页）**：覆盖总体两阶段/多模块训练与推理闭环（标清冻结 vs 更新模块）、各子网络原图精嵌 + 输入输出张量维度 + **完整编号公式组与损失权重分工**。
+     5. `L06/L08` **实验数据集构建、防泄漏划分协议与多维评价体系（1 页）**：交代采集/对齐质控、训练/验证/测试严格隔离、公开基准定位、硬件与阶段超参、互补评价指标含义。
+     6. `L06/L07` + `L11a/b` **多路线定量实证、取舍归因与真实定性对比（4–6 页）**：公开集多路线代表基线多指标对比（严禁砍剩 2 点连线！）+ 像素保真 vs 感知质量权衡机理 + 原文放大细节对比读图 + 领域自建集重训全指标优势与场景归因。
+     7. `L11a/b` + `L08` **分量消融、逐步模块叠加（全指标）与超参敏感性剖析（2 页）**：展示移除各分量的物理崩溃表现（全四列指标）+ 逐步引入各模块的边际增益分工 + 关键损失权重寻优（如 $\lambda=1.5$）。
+     8. `L05/L09/L10a` + `L10b` **真实部署边界、全文三维机制收束与庄重致谢讨论（2–3 页）**。
+   - **Run Mandatory Stage-1 Depth Validation BEFORE Stage 2**:
+     ```bash
+     "$PYTHON_BIN" scripts/validate_outputs.py --base-dir ./outputs --outline-only
+     ```
+     Fix any flagged shallow slide (`<110` chars `上屏文案`), missing cited equation, verbatim banner echo, or generic cliché before generating visuals!
 
-Output:
-- Create or update a file named exactly:
+---
 
-`ppt_outline.md`
+## Stage 2: Visual Scheme Generation & Lock (`outputs/imagegen/visual_preview.png`)
 
-The file must contain a complete Markdown PPT outline of about 12-18 pages by default. Use about 10 pages only when the source document is short or the user explicitly asks for a compact deck.
+1. Inspect `front-cover-anchor.png`, `front-toc-anchor.png`, `closing-synthesis-anchor.png`, `closing-thanks-anchor.png`, and matching sub-system anchors (`style-a-*.png` or `style-b-*.png`).
+2. Generate `outputs/imagegen/visual_preview.png` via `$imagegen` reflecting exact slide count, locked `Style Bible`, diverse layout sequence, real-figure slots (`L11a/b/c`), and rich multi-card/multi-metric visual density.
+3. **Internal Visual Gate**: verify stately Front-3 gravitas, domain-neutral TOC sidebar, rich academic density (zero giant-font 3-line flashcards!), zero mint-green/3D slop, and zero school logo / cross-style building leaks.
 
-Strict rules:
-1. All content must be strictly based on the uploaded document.
-2. Do not fabricate information.
-3. If information is not explicitly stated in the original document, write: `原文未明确说明`.
-4. Do not use external sources.
-5. Keep the structure suitable for academic presentation, course presentation, thesis sharing, or project introduction.
-6. Each slide must include:
-   - 页面标题
-   - 页面类型
-   - 核心内容
-   - 内容展开
-   - 建议展示方式
-   - 视觉生成要点
-   - 原文依据
-7. Each slide must contain enough detail to support later PPT generation, especially enough visual and content cues for `$imagegen`.
-8. Prioritize extracting important data, experiments, methods, charts, formulas, models, algorithms, case studies, results, limitations, and conclusion evidence from the original document.
-9. If the uploaded document is long, reorganize the content into a presentation logic instead of copying the original table of contents.
-10. If a PPT template is provided, use its section rhythm and page families to guide page distribution and content density, while keeping all factual content grounded in the source document.
-11. The output must be usable by AI PPT tools, Codex, or visual design tools.
+---
 
-Use the structure in `references/outline-template.md`.
+## Stage 3: High-Density Slide Generation, Lossless Figure Compositing, QA & Assembly
 
-After Stage 1, reply briefly only:
-- 已生成 ppt_outline.md
-- 文件中包含约 12-18 页 PPT 大纲
-- 内容严格基于上传文档
+1. **Generate Complete Slide Bitmaps (`slide_01.png` ... `slide_NN.png`)**:
+   - Build self-contained prompts from `references/slide-prompt-guide.md`, prepending verbatim `LOCKED STYLE BIBLE` and explicit math symbol/subscript spelling locks.
+   - **Mandatory Reference Routing**:
+     - Slide 1 → `front-cover-anchor.png`; Slide 2 → `front-toc-anchor.png`;
+     - Slides 3..N-2 → reviewed `visual_preview.png` + matching layout anchor;
+     - Slide N-1 → `closing-synthesis-anchor.png` (pure Style B footer if Style B—DO NOT copy Style A's bottom campus building sketch!);
+     - Slide N → `closing-thanks-anchor.png` (centered compact discussion card + uniform navy bottom ribbon & navy page badge matching Slide 1).
+   - For **`L11a` / `L11b` / `L11c` 原文真图精嵌剖析页**: render ALL Chinese titles, thesis banners, structured multi-point analysis cards with exact paper equations, bottom takeaway bar, and page badge via `$imagegen`, leaving clean pure-white framed `原文图展示框` at exact target coordinates (`--slot`).
 
-Do not paste the full outline into chat.
+2. **Pixel-Exact Lossless Paper Figure Compositing (`embed_paper_figure.py`)**:
+   - Composite single (`L11a/b`) or dual (`L11c`, run twice for left & right slots) real paper figures cleanly:
+     ```bash
+     "$PYTHON_BIN" scripts/embed_paper_figure.py \
+       --slide ./outputs/imagegen/generated_slides/slide_05.png \
+       --figure ./outputs/source_assets/figures/image1.png \
+       --slot 0.035,0.25,0.57,0.85 \
+       --backup-dir ./outputs/imagegen/raw_before_composite \
+       --output ./outputs/imagegen/generated_slides/slide_05.png
+     ```
+   - Record every slide's `method`, `layout`, `embedded_source_figures`, and exact `prompt` in `outputs/imagegen_manifest.json`.
 
-## Stage 2: Visual Style Generation
+3. **Assemble PPTX + 8-Point Advisor Visual/Content Audit + Automated Validation**:
+   ```bash
+   "$PYTHON_BIN" scripts/build_ppt_from_images.py \
+     --image-dir ./outputs/imagegen/generated_slides \
+     --outline ./outputs/ppt_outline.md \
+     --contact-sheet ./outputs/imagegen/final_contact_sheet.png \
+     --output ./outputs/defense_presentation.pptx
 
-Input:
-- `ppt_outline.md`
-
-Output:
-- One full visual preview image or multi-page thumbnail contact sheet representing the complete PPT visual scheme, saved as `outputs/imagegen/visual_preview.png` for either generation mode.
-
-Must use `$imagegen`.
-
-Execution rules:
-1. Load and follow `$imagegen` before generating the visual preview.
-2. Create `outputs/imagegen/` before generation. Use built-in `image_gen` first unless the user explicitly selected CLI.
-3. In built-in mode, generate the preview, copy the selected result to `outputs/imagegen/visual_preview.png`, and immediately display that image inline in the chat.
-4. If the built-in tool is unavailable or a real call fails to return a valid image, follow the installed `$imagegen` skill's authorized CLI fallback, save the output to `outputs/imagegen/visual_preview.png`, and immediately display that image inline in the chat.
-5. If the user explicitly selected CLI, start with the CLI path above. If it fails and the request was not CLI-only, try built-in mode.
-6. Treat the preview as a generated bitmap asset, not as text, Markdown, code, SVG, or HTML.
-
-Visual requirements:
-- Follow the Visual Style Priority above.
-- If a PPT/PPTX template is provided, reproduce its overall visual language in a new deck: palette, typography feel, section-page composition, content-page rhythm, spacing, title treatment, chart/table treatment, and recurring visual motifs.
-- If no template is provided, use the default academic visual preset in `references/visual-style-spec.md`.
-- Keep the result formal, professional, academic, clean, stable, and suitable for thesis defense, science and engineering papers, or project reporting.
-- Use a unified layout system.
-- Keep content dense but readable.
-- Maintain clear hierarchy.
-- Maintain consistent chart, process diagram, table, and framework diagram style.
-- Cover pages including:
-  - 封面
-  - 目录
-  - 背景
-  - 方法
-  - 实验
-  - 结果
-  - 总结
-  - 展望
-  - 致谢
-
-Important:
-- Do not output text suggestions.
-- Do not output analysis.
-- Do not output code.
-- Do not output Markdown descriptions as a substitute for the generated visual.
-- After the bitmap exists, use Markdown image embedding only to make that visual result visible in the chat.
-- The result should look like a full PPT page preview board / multi-page thumbnail grid.
-
-## Stage 3: Full PPT Generation
-
-Input:
-- `ppt_outline.md`
-- Visual scheme from Stage 2 generated by `$imagegen`
-- Any generated slide images
-
-Output:
-- Full-slide images in `outputs/imagegen/generated_slides/` for either generation mode
-- `imagegen_manifest.json`
-- A complete PowerPoint file, for example:
-
-`defense_presentation.pptx`
-
-Generation rules:
-1. Generate every slide as a full-page 16:9 image.
-   - Every final bitmap must already contain the slide's visible Chinese title, core content, labels, and layout.
-   - The PPT assembly step may not add or edit visible slide text.
-2. Use `$imagegen` and the selected method to generate each slide page: one built-in `image_gen` call per page in default built-in mode, or a monitorable `scripts/image_gen.py generate-batch` process in CLI mode.
-3. Each generated image must represent one complete PPT slide.
-4. The final PPT must use generated images as full-slide backgrounds/pages.
-5. Do not rely on editable text boxes.
-6. Do not worry about text editability.
-7. Do not worry about minor OCR-like issues in generated image text unless the user specifically asks for text-perfect slides.
-8. Insert each generated image into a PowerPoint slide so that it fully covers the slide canvas.
-9. Maintain the same formal academic visual style across all pages.
-10. The PPT should follow the page structure in `ppt_outline.md` and the Visual Style Priority above.
-11. Do not create slide images through HTML/CSS screenshots, SVG export, canvas drawing, manually composed placeholders, or any route that bypasses `$imagegen`.
-12. If `$imagegen` cannot generate the slide images, stop and report the incomplete stage instead of assembling a PPT from non-imagegen placeholders.
-13. Generate one final page image per slide in `ppt_outline.md`; the number of image files recorded in `imagegen_manifest.json` must equal the number of outline slides.
-14. Name images with zero-padded slide numbers, such as `slide_01.png`, `slide_02.png`, and so on.
-15. Do not accept or manifest final prompts that ask for background-only or text-free pages. Any final prompt containing `text-free`, `no readable words`, `background template`, `blank areas`, `editable text`, `editable Chinese text`, or `text to be added later` must be treated as a failed workflow.
-16. Immediately after each page image becomes available, display that individual image in the chat with `第 X/N 页` and an absolute-path Markdown image. Do not wait for the full deck, and do not substitute only a contact sheet.
-
-For CLI slide generation, create `outputs/imagegen/prompts.jsonl` with one JSON object per slide prompt, then use the installed `$imagegen` skill's supported batch command and credential mechanism. Write results to `outputs/imagegen/generated_slides/`, keep the process monitorable, poll for new `slide_XX.png` files, and display each new page inline before continuing to wait. Do not copy a maintainer-specific CLI path or credential configuration into the project.
-
-Create `imagegen_manifest.json` after generating the preview and slide images. It must include:
-
-```json
-{
-  "generation_method": "imagegen_cli_fallback",
-  "visual_preview": "outputs/imagegen/visual_preview.png",
-  "image_output_dir": "outputs/imagegen/generated_slides",
-  "model": "gpt-image-2",
-  "quality": "medium",
-  "size": "1536x864",
-  "slides": [
-    {
-      "slide": 1,
-      "file": "outputs/imagegen/generated_slides/slide_01.png",
-      "method": "imagegen_cli_fallback",
-      "prompt": "full slide prompt used for this page"
-    }
-  ]
-}
-```
-
-Use `scripts/build_ppt_from_images.py` to assemble the images into a `.pptx`.
-
-The script should:
-- Accept an input directory containing slide images
-- Sort images by slide number
-- Create a 16:9 PowerPoint deck
-- Add each image as a full-slide image
-- Save the output as `defense_presentation.pptx`
-- Preserve slide order
-- Avoid margins or cropping unless needed to fill the slide
-
-Example command:
-
-```bash
-python scripts/build_ppt_from_images.py \
-  --image-dir ./outputs/imagegen/generated_slides \
-  --output ./defense_presentation.pptx
-```
-
-Use `--image-dir ./outputs/imagegen/generated_slides` for both generation modes.
-
-Validate final outputs with:
-
-```bash
-python scripts/validate_outputs.py --base-dir .
-```
-
-The validation must fail if:
-- The visual preview file recorded in `imagegen_manifest.json` is missing.
-- `imagegen_manifest.json` is missing.
-- Any manifest entry does not use an allowed `$imagegen` method: `built_in_image_gen` or `imagegen_cli_fallback`.
-- The number of slide images does not equal the number of slides in `ppt_outline.md`.
-- Any expected `slide_XX.*` image recorded in `imagegen_manifest.json` is missing.
-- Any manifest prompt describes a text-free/background/template page rather than a finished slide.
-- The final PPTX contains editable visible text, multiple picture objects on a slide, or anything other than one full-slide image per slide.
+   "$PYTHON_BIN" scripts/validate_outputs.py --base-dir ./outputs
+   ```
+   - Visually inspect `final_contact_sheet.png` AND every equation / real-figure / quantitative slide at full resolution: verify zero missing equations, zero textbook PSNR/FID filler formulas, zero banner-card verbatim echoes, crisp embedded figures, accurate multi-baseline numbers, and 100% uniform footer geometry. Regenerate/re-composite any defective slide (max 2 passes) and re-run validation.
 
 ## Final Response Rules
 
-After completing the full workflow, reply briefly only with:
-- 已生成 ppt_outline.md
-- 已通过 imagegen 来源校验，并注明使用 `built_in_image_gen` 或 `imagegen_cli_fallback`
-- 已生成整套 PPT 页面视觉图
-- 已生成 defense_presentation.pptx
-- PPT 使用生成图片作为完整页面
-- 直接展示整套联系表（若已生成），并提供最终 PPTX 的可点击链接
-
-Do not output:
-- Full outline content
-- Long explanation
-- Internal reasoning
-- Irrelevant suggestions
+After completing all 3 stages, reply concisely with:
+- 汇报场景、选定视觉体系与总页数（覆盖 8 大核心模块）
+- 已生成并通过深度门禁的 `outputs/ppt_outline.md`（含四大前置台账与逐页口播备注）
+- 已无损嵌入的论文真图清单及已完整上屏的核心编号公式清单
+- 已覆盖的代表性对比基线谱系、核心定量权衡结论与消融归因亮点
+- 质检与溯源结果，以及审核总览图 `outputs/imagegen/final_contact_sheet.png` 与成品 `outputs/defense_presentation.pptx`
