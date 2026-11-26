@@ -53,7 +53,7 @@
 
 重绘完成后，你可以直接在 PPT 里修改实验分组名称、调整流程箭头，或替换一张显微图。文字、形状和连线都是原生 PowerPoint 对象，复杂插图作为独立图片保留。
 
-[![六光标在机制图上放置插图、绘制面板和标注](assets/gallery/rebuild-image-in-powerpoint-swarm/drawing-process.jpg)](https://github.com/xiao24bei/xiaobei-skill/releases/download/rebuild-image-in-powerpoint-swarm-20261125/drawing-process.mp4)
+[![蜂群绘图实拍：六个角色光标同时在反应器示意图上布局、连线和框选](assets/gallery/rebuild-image-in-powerpoint-swarm/six-agent-cursors.jpg)](https://github.com/xiao24bei/xiaobei-skill/releases/download/rebuild-image-in-powerpoint-swarm-20261125/engineering-slide.mp4)
 
 | 绘图案例 | 协同绘制的内容 | 查看演示 |
 |---|---|---|
